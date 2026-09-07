@@ -1,6 +1,5 @@
-﻿
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using TARge25Shop.Core.Domain;
 
 namespace TARge25Shop.Data
 {
@@ -12,5 +11,7 @@ namespace TARge25Shop.Data
         {
 
         }
+        //vaja lisada dbSet, mis on seotud meie domain klassiga Spaceship
+        public DbSet<Spaceship> Spaceships { get; set; }
     }
 }
