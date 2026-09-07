@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="TARge25Shop.ApplicationServices/TARge25Shop.ApplicationServices.csproj" Id="bf3490f6-4ffd-4ba5-ab9e-7031270200bc" />
+  <Project Path="TARge25Shop.Core/TARge25Shop.Core.csproj" Id="0520ecf1-c20c-4d72-b7ff-ed589ce50086" />
+  <Project Path="TARge25Shop.Data/TARge25Shop.Data.csproj" Id="6812edfa-3312-44ed-a305-2383b84c4403" />
   <Project Path="TARge25Shop/TARge25Shop.csproj" />
 </Solution>
