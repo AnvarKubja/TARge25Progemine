@@ -34,6 +34,7 @@ namespace TARge25Shop.Controllers
                 Id = x.Id,
                 Name = x.Name,
                 ShipType = x.ShipType,
+                EnginePower = x.EnginePower,
                 CreatedAt = x.CreatedAt,
                 Crew = x.Crew
             });
@@ -91,6 +92,32 @@ namespace TARge25Shop.Controllers
             };
 
             return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(SpaceshipUpdateViewModel vm)
+        {
+            var dto = new SpaceshipDto
+            {
+                Id = vm.Id,
+                Name = vm.Name,
+                ShipType = vm.ShipType,
+                Crew = vm.Crew,
+                EnginePower = vm.EnginePower
+            };
+            var result = await _spaceshipServices.Update(dto);
+            if (result == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        public async Task<IActionResult> Delete(Guid Id)
+        {
+            return View();
         }
     }
 }

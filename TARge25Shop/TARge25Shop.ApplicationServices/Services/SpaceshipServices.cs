@@ -41,13 +41,18 @@ namespace TARge25Shop.ApplicationServices.Services
         //teha update meetod, mis võtab vastu dto ja uuendab olemasolevat kosmoselaeva
             public async Task<Spaceship> Update(SpaceshipDto dto)
         {
-            Spaceship spaceShip = new();
+            var spaceShip = await _context.Spaceships
+                .SingleOrDefaultAsync(x => x.Id == dto.Id);
+
+            if (spaceShip == null)
+            {
+                return null;
+            }
 
             spaceShip.Name = dto.Name;
             spaceShip.ShipType = dto.ShipType;
             spaceShip.Crew = dto.Crew;
             spaceShip.EnginePower = dto.EnginePower;
-            spaceShip.CreatedAt = dto.CreatedAt;
             spaceShip.UpdatedAt = DateTime.Now;
 
             _context.Spaceships.Update(spaceShip);
@@ -62,6 +67,17 @@ namespace TARge25Shop.ApplicationServices.Services
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return spaceship;
+        }
+
+            public async Task<Spaceship> Delete(Guid Id)
+        {
+            var result = await _context.Spaceships
+                .FirstOrDefaultAsync(x => x.Id == Id);
+
+            _context.Spaceships.Remove(result);
+            await _context.SaveChangesAsync();
+
+            return result;
         }
 
     }
