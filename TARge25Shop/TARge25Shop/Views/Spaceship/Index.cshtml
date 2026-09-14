@@ -20,10 +20,13 @@
             </tr>
         </thead>
         <tbody>
+            @{
+                int nr = 1;
+            }
             @foreach (var spaceship in Model)
             {
                 <tr>
-                    <td>@spaceship.Id</td>
+                    <td>@nr</td>
                     <td>@spaceship.Name</td>
                     <td>@spaceship.ShipType</td>
                     <td>@spaceship.CreatedAt</td>
@@ -34,7 +37,8 @@
                         <a asp-action="delete" asp-controller="spaceship" asp-route-id="@spaceship.Id" class="btn btn-outline-danger">Delete</a>
                     </td>
                 </tr>
-               
+                    nr++;
+
             }
         </tbody>
     </table>
