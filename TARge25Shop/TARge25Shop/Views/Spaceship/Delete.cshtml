@@ -1,0 +1,46 @@
+﻿@model TARge25Shop.Models.Spaceship.SpaceshipDeleteViewModel
+<link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+@{
+    ViewData["Title"] = "Kustuta kosmoselaev";
+}
+
+<div class="container mt-4">
+    <h1 class="text-danger">Kustuta kosmoselaev</h1>
+    <h3>Kas oled kindel, et soovid selle kosmoselaeva kustutada?</h3>
+    <hr />
+
+    <div class="card border-danger mb-4">
+        <div class="card-header bg-danger text-white">
+            <h4 class="card-title mb-0">Kosmoselaeva andmed</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 fw-bold">ID:</dt>
+                <dd class="col-sm-9">@Model.Id</dd>
+
+                <dt class="col-sm-3 fw-bold">Nimi:</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3 fw-bold">Tüüp:</dt>
+                <dd class="col-sm-9">@Model.ShipType</dd>
+
+                <dt class="col-sm-3 fw-bold">Crew:</dt>
+                <dd class="col-sm-9">@Model.Crew</dd>
+                
+                <dt class="col-sm-3 fw-bold">EnginePower:</dt>
+                <dd class="col-sm-9">@Model.EnginePower</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        
+        <button type="submit" class="btn btn-danger me-2">
+            <i class="bi bi-trash"></i> Jah, kustuta
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            Tühista ja tagasi nimekirja
+        </a>
+    </form>
+</div>

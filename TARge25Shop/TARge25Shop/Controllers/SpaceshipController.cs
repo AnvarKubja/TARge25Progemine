@@ -115,9 +115,39 @@ namespace TARge25Shop.Controllers
 
         }
 
-        public async Task<IActionResult> Delete(Guid Id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            return View();
+            var spaceship = await _spaceshipServices.DetailAsync(id);
+
+            if (spaceship == null)
+            {
+                return NotFound();
+            }
+            /* tuleb teha vaheinstants dto ja vm vahel */
+            var vm = new SpaceshipDeleteViewModel
+            {
+                Id = spaceship.Id,
+                Name = spaceship.Name,
+                ShipType = spaceship.ShipType,
+                Crew = spaceship.Crew,
+                EnginePower = spaceship.EnginePower
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ActionName("DeleteConfirmed")]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            var spaceship = await _spaceshipServices.Delete(id);
+
+            if (spaceship == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
