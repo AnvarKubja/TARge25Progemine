@@ -1,0 +1,47 @@
+﻿@model TARge25Shop.Models.Spaceship.SpaceshipDetailViewModel
+
+@{
+    ViewData["Title"] = "Kosmoselaeva detailid";
+}
+
+<div class="container mt-4">
+    <h1>Kosmoselaeva detailid</h1>
+    <h4>@Model.Name</h4>
+    <hr />
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title mb-0">Tehnilised andmed</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 fw-bold">ID:</dt>
+                <dd class="col-sm-9 text-muted">@Model.Id</dd>
+
+                <dt class="col-sm-3 fw-bold">Nimi:</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3 fw-bold">Type:</dt>
+                <dd class="col-sm-9">@Model.ShipType</dd>
+
+                <dt class="col-sm-3 fw-bold">Crew:</dt>
+                <dd class="col-sm-9">@Model.Crew</dd>
+
+                <dt class="col-sm-3 fw-bold">EnginePower:</dt>
+                <dd class="col-sm-9">@Model.EnginePower</dd>
+
+                <dt class="col-sm-3 fw-bold">Created at:</dt>
+                <dd class="col-sm-9">@Model.CreatedAt</dd>
+
+                <dt class="col-sm-3 fw-bold">Updated at:</dt>
+                <dd class="col-sm-9">@Model.UpdatedAt</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a asp-action="Index" class="btn btn-secondary">
+            Tagasi nimekirja
+        </a>
+    </div>
+</div>

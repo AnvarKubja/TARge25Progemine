@@ -149,5 +149,30 @@ namespace TARge25Shop.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-    }
+
+        [HttpGet]
+        //teha Detaili vaate meetod
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var spaceship = await _spaceshipServices.DetailAsync(id);
+
+            if (spaceship == null)
+            {
+                return NotFound();
+            }
+
+            var vm = new SpaceshipDetailViewModel
+            {
+                Id = spaceship.Id,
+                Name = spaceship.Name,
+                ShipType = spaceship.ShipType,
+                Crew = spaceship.Crew,
+                EnginePower = spaceship.EnginePower,
+                CreatedAt = spaceship.CreatedAt,
+                UpdatedAt = spaceship.UpdatedAt
+            };
+
+            return View(vm);
+        }
+     }
 }
