@@ -46,14 +46,17 @@ namespace TARge25Shop.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            SpaceshipCreateUpdateViewModel result = new();
+
+            return View("CreateUpdate", result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(SpaceshipCreateViewModel vm)
+        public async Task<IActionResult> Create(SpaceshipCreateUpdateViewModel vm)
         {
             var dto = new SpaceshipDto
             {
+                Id = vm.Id,
                 Name = vm.Name,
                 ShipType = vm.ShipType,
                 Crew = vm.Crew,
@@ -82,7 +85,7 @@ namespace TARge25Shop.Controllers
                 return NotFound();
             }
 
-            var vm = new SpaceshipUpdateViewModel
+            var vm = new SpaceshipCreateUpdateViewModel
             {
                 Id = spaceship.Id,
                 Name = spaceship.Name,
@@ -91,11 +94,11 @@ namespace TARge25Shop.Controllers
                 EnginePower = spaceship.EnginePower
             };
 
-            return View(vm);
+            return View("CreateUpdate", vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(SpaceshipUpdateViewModel vm)
+        public async Task<IActionResult> Update(SpaceshipCreateUpdateViewModel vm)
         {
             var dto = new SpaceshipDto
             {
