@@ -16,7 +16,7 @@ namespace TARge25Shop.ApplicationServices.Services
             _context = context;
         }
 
-        public async Task<Kindergarten> Create(Kindergarten) Create(KindergartenDto dto)
+        public async Task<Kindergarten> Create(KindergartenDto dto)
         {
             Kindergarten kindergarten = new();
 
@@ -29,6 +29,28 @@ namespace TARge25Shop.ApplicationServices.Services
             kindergarten.UpdatedAt = DateTime.Now;
 
             _context.Kindergartens.Add(kindergarten);
+            await _context.SaveChangesAsync();
+
+            return kindergarten;
+        }
+
+        public async Task<Kindergarten> Update(KindergartenDto dto)
+        {
+            var kindergarten = await _context.Kindergartens
+                .SingleOrDefaultAsync(x => x.Id == dto.Id);
+
+            if (kindergarten == null)
+            {
+                return null;
+            }
+
+            kindergarten.GroupName = dto.GroupName;
+            kindergarten.ChildrenCount = dto.ChildrenCount;
+            kindergarten.KindergartenName = dto.KindergartenName;
+            kindergarten.TeacherName = dto.TeacherName;
+            kindergarten.UpdatedAt = DateTime.Now;
+
+            _context.Kindergartens.Update(kindergarten);
             await _context.SaveChangesAsync();
 
             return kindergarten;
