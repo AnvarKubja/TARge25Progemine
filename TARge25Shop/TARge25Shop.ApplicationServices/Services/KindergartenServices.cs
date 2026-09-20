@@ -61,5 +61,16 @@ namespace TARge25Shop.ApplicationServices.Services
             return await _context.Kindergartens
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<Kindergarten> Delete(Guid id)
+        {
+            var result = await _context.Kindergartens
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            _context.Kindergartens.Remove(result);
+            await _context.SaveChangesAsync();
+
+            return result;
+        }
     }
 }
