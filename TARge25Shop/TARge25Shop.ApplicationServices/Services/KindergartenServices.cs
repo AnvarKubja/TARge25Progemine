@@ -55,5 +55,11 @@ namespace TARge25Shop.ApplicationServices.Services
 
             return kindergarten;
         }
+
+        public async Task<Kindergarten> DetailAsync(Guid id)
+        {
+            return await _context.Kindergartens
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }
