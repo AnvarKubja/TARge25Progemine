@@ -1,12 +1,12 @@
 ﻿@model TARge25Shop.Models.Kindergarten.KindergartenDeleteViewModel
 <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
 @{
-    ViewData["Title"] = "Delete child";
+    ViewData["Title"] = "Delete kindergarten";
 }
 
 <div class="container mt-4">
-    <h1 class="text-danger">Delete child</h1>
-    <h3>Are you sure you want to delete this child?</h3>
+    <h1 class="text-danger">Delete kindergarten</h1>
+    <h3>Are you sure you want to delete this kindergarten?</h3>
     <hr />
 
     <div class="card border-danger mb-4">
@@ -18,16 +18,16 @@
                 <dt class="col-sm-3 fw-bold">ID:</dt>
                 <dd class="col-sm-9">@Model.Id</dd>
 
-                <dt class="col-sm-3 fw-bold">Name:</dt>
+                <dt class="col-sm-3 fw-bold">Group Name:</dt>
                 <dd class="col-sm-9">@Model.GroupName</dd>
 
-                <dt class="col-sm-3 fw-bold">Type:</dt>
+                <dt class="col-sm-3 fw-bold">Children Count:</dt>
                 <dd class="col-sm-9">@Model.ChildrenCount</dd>
 
-                <dt class="col-sm-3 fw-bold">Crew:</dt>
+                <dt class="col-sm-3 fw-bold">Kindergarten Name:</dt>
                 <dd class="col-sm-9">@Model.KindergartenName</dd>
                 
-                <dt class="col-sm-3 fw-bold">EnginePower:</dt>
+                <dt class="col-sm-3 fw-bold">Teacher Name:</dt>
                 <dd class="col-sm-9">@Model.TeacherName</dd>
             </dl>
         </div>
@@ -40,7 +40,7 @@
             <i class="bi bi-trash"></i> Yes, delete
         </button>
         <a asp-action="Index" class="btn btn-secondary">
-            Cancel and back to list
+            Cancel, back to the list
         </a>
     </form>
 </div>

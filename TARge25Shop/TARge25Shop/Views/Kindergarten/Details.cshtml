@@ -1,33 +1,33 @@
 ﻿@model TARge25Shop.Models.Kindergarten.KindergartenDetailViewModel
 
 @{
-    ViewData["Title"] = "Kosmoselaeva detailid";
+    ViewData["Title"] = "Kindergarten details";
 }
 
 <div class="container mt-4">
-    <h1>Kosmoselaeva detailid</h1>
+    <h1>Kindergarten details</h1>
     <h4>@Model.GroupName</h4>
     <hr />
 
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-dark text-white">
-            <h5 class="card-title mb-0">Tehnilised andmed</h5>
+            <h5 class="card-title mb-0">Data</h5>
         </div>
         <div class="card-body">
             <dl class="row mb-0">
                 <dt class="col-sm-3 fw-bold">ID:</dt>
                 <dd class="col-sm-9 text-muted">@Model.Id</dd>
 
-                <dt class="col-sm-3 fw-bold">Nimi:</dt>
+                <dt class="col-sm-3 fw-bold">Group Name:</dt>
                 <dd class="col-sm-9">@Model.GroupName</dd>
 
-                <dt class="col-sm-3 fw-bold">Type:</dt>
+                <dt class="col-sm-3 fw-bold">Children Count:</dt>
                 <dd class="col-sm-9">@Model.ChildrenCount</dd>
 
-                <dt class="col-sm-3 fw-bold">Crew:</dt>
+                <dt class="col-sm-3 fw-bold">Kindergarten Name:</dt>
                 <dd class="col-sm-9">@Model.KindergartenName</dd>
 
-                <dt class="col-sm-3 fw-bold">EnginePower:</dt>
+                <dt class="col-sm-3 fw-bold">Teacher Name:</dt>
                 <dd class="col-sm-9">@Model.TeacherName</dd>
 
                 <dt class="col-sm-3 fw-bold">Created at:</dt>
