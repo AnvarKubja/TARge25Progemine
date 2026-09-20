@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TARge25Shop.Core.Dto
 {
-    public class Kindergarten
+    public class KindergartenDto
     {
         public Guid? Id { get; set; }
         public string GroupName { get; set; } = string.Empty;

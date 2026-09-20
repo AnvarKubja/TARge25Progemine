@@ -4,6 +4,8 @@ using System.Text;
 using TARge25Shop.Core.Domain;
 using TARge25Shop.Core.ServiceInterface;
 using TARge25Shop.Data;
+using Microsoft.EntityFrameworkCore;
+using TARge25Shop.Core.Dto;
 
 namespace TARge25Shop.ApplicationServices.Services
 {

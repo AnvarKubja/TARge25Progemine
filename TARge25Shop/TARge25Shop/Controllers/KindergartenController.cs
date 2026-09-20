@@ -2,6 +2,7 @@
 using TARge25Shop.Core.ServiceInterface;
 using TARge25Shop.Data;
 using TARge25Shop.Models.Kindergarten;
+using TARge25Shop.Core.Dto;
 
 namespace TARge25Shop.Controllers
 {

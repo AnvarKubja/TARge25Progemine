@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TARge25Shop.Core.Domain;
+using TARge25Shop.Core.Dto;
 
 namespace TARge25Shop.Core.ServiceInterface
 {
@@ -8,7 +10,7 @@ namespace TARge25Shop.Core.ServiceInterface
     {
         Task<Kindergarten> Create(KindergartenDto dto);
         Task<Kindergarten> Update(KindergartenDto dto);
-        Task<Kindergarten> DetailAsync(KindergartenDto dto);
-        Task<Kindergarten> Delete(KindergartenDto dto);
+        Task<Kindergarten> DetailAsync(Guid id);
+        Task<Kindergarten> Delete(Guid id);
     }
 }
