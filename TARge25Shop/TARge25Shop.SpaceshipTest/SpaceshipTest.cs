@@ -52,5 +52,62 @@ namespace TARge25Shop.SpaceshipTest
             //kontroll
             Assert.NotEqual(wrongGuid, goodGuid);
         }
+
+        //Seleta kodus lahti, nagu eelnevate testide laused eesti keelde.
+        [Fact]
+        public async Task Should_GetSpaceshipByID_WhenGuidIsEqual()
+        {
+            //ülesseade
+            Guid databaseGuid = Guid.Parse("eda81556-c05d-457e-a2da-4ce3d74f0439");
+            Guid seekGuid = Guid.Parse("eda81556-c05d-457e-a2da-4ce3d74f0439");
+
+            //tegevus
+            await Svc<ISpaceshipServices>().DetailAsync(seekGuid);
+
+            //kontroll
+            Assert.Equal(databaseGuid, seekGuid);
+        }
+
+        [Fact]
+        public async Task Should_SpaceshipDeletedByID_WhenReturnedResultIsEqual()
+        {
+            //ülesseade
+            SpaceshipDto dto = MockSpaceshipData();
+
+            //tegevus
+            var addSpaceship = await Svc<ISpaceshipServices>().Create(dto);
+            var deleteSpaceship = await Svc<ISpaceshipServices>().Delete((Guid)addSpaceship.Id);
+
+            //kontroll
+            Assert.Equal(addSpaceship.Id, deleteSpaceship.Id);
+        }
+
+        private SpaceshipDto MockSpaceshipData(bool isOneOrTwo = false)
+        {
+            if (isOneOrTwo == false)
+            {
+                return new SpaceshipDto
+                {
+                    Name = "X AE a L 12",
+                    ShipType = "lendav taldrik",
+                    Crew = 666,
+                    EnginePower = 12,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                };
+            }
+            else
+            {
+                return new SpaceshipDto
+                {
+                    Name = "raketa",
+                    ShipType = "lendav kauss",
+                    Crew = 56,
+                    EnginePower = 32,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                };
+            }
+        }
     }
 }
