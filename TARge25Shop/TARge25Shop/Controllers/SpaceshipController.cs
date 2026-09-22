@@ -1,5 +1,6 @@
 ﻿using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TARge25Shop.Core.Dto;
 using TARge25Shop.Core.ServiceInterface;
 using TARge25Shop.Data;
@@ -138,15 +139,25 @@ namespace TARge25Shop.Controllers
             {
                 return NotFound();
             }
+
+            var images = await _context.FileToApis
+                .Where(x => x.SpaceshipId == id)
+                .Select(y => new ImageViewModel
+                {
+                    FilePath = y.ExistingFilePath,
+                    ImageId = y.Id
+                }).ToArrayAsync();
             /* tuleb teha vaheinstants dto ja vm vahel */
-            var vm = new SpaceshipDeleteViewModel
-            {
-                Id = spaceship.Id,
-                Name = spaceship.Name,
-                ShipType = spaceship.ShipType,
-                Crew = spaceship.Crew,
-                EnginePower = spaceship.EnginePower
-            };
+            var vm = new SpaceshipDeleteViewModel();
+
+            vm.Id = spaceship.Id;
+            vm.Name = spaceship.Name;
+            vm.ShipType = spaceship.ShipType;
+            vm.Crew = spaceship.Crew;
+            vm.EnginePower = spaceship.EnginePower;
+            vm.CreatedAt = spaceship.CreatedAt;
+            vm.UpdatedAt = spaceship.UpdatedAt;
+            vm.Images.AddRange(images);
 
             return View(vm);
         }
@@ -175,16 +186,26 @@ namespace TARge25Shop.Controllers
                 return NotFound();
             }
 
-            var vm = new SpaceshipDetailViewModel
-            {
-                Id = spaceship.Id,
-                Name = spaceship.Name,
-                ShipType = spaceship.ShipType,
-                Crew = spaceship.Crew,
-                EnginePower = spaceship.EnginePower,
-                CreatedAt = spaceship.CreatedAt,
-                UpdatedAt = spaceship.UpdatedAt
-            };
+            var images = await _context.FileToApis
+                .Where(x => x.SpaceshipId == id)
+                .Select(y => new ImageViewModel
+                {
+                    FilePath = y.ExistingFilePath,
+                    ImageId = y.Id
+                }).ToArrayAsync();
+
+            //tuleb kasutada AddRange, et saada pildid vm kaasa
+            //see on vaheinstants domaini ja vm vahel
+            var vm = new SpaceshipDetailViewModel();
+            
+                vm.Id = spaceship.Id;
+                vm.Name = spaceship.Name;
+                vm.ShipType = spaceship.ShipType;
+                vm.Crew = spaceship.Crew;
+                vm.EnginePower = spaceship.EnginePower;
+                vm.CreatedAt = spaceship.CreatedAt;
+                vm.UpdatedAt = spaceship.UpdatedAt;
+                vm.Images.AddRange(images);
 
             return View(vm);
         }
