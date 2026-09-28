@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using TARge25Shop.Core.Domain;
 using TARge25Shop.Core.Dto;
 using TARge25Shop.Core.ServiceInterface;
@@ -55,6 +56,28 @@ namespace TARge25Shop.ApplicationServices.Services
                 }
 
             }
+        }
+
+        public async Task<FileToApi> RemoveImageFromApi(FileToApiDto dto)
+        {
+            //kui soovin kustutada faili, siis pean läbi Id pildi ülesse otsima
+            var imageId = await _context.FileToApis
+                .FirstOrDefaultAsync(x => x.Id == dto.Id);
+
+            //teha muutuja filePath, mis näitab failide asukohta
+            var filePath = _webHost.ContentRootPath + "\\wwwroot\\multipleFileUpload\\"
+                + imageId.ExistingFilePath;
+
+            //kui fail asub selles kaustas, siis kustuta
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            _context.FileToApis.Remove(imageId);
+            await _context.SaveChangesAsync();
+
+            return null;
         }
     }
 }
