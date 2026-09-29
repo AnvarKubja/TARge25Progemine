@@ -5,20 +5,19 @@
 }
 
 <div class="container mt-4">
-    <h1>Kinnisvara detailid</h1>
-    <h4>@Model.Area</h4>
+    <h1>Real Estate details</h1>
     <hr />
 
     <div class="card shadow-sm mb-4">
         <div class="card-header bg-dark text-white">
-            <h5 class="card-title mb-0">Andmed</h5>
+            <h5 class="card-title mb-0">Details</h5>
         </div>
         <div class="card-body">
             <dl class="row mb-0">
                 <dt class="col-sm-3 fw-bold">ID:</dt>
                 <dd class="col-sm-9 text-muted">@Model.Id</dd>
 
-                <dt class="col-sm-3 fw-bold">Area:</dt>
+                <dt class="col-sm-3 fw-bold">Area (m²):</dt>
                 <dd class="col-sm-9">@Model.Area</dd>
 
                 <dt class="col-sm-3 fw-bold">Location:</dt>
@@ -42,7 +41,7 @@
 
     <div class="d-flex gap-2">
         <a asp-action="Index" class="btn btn-secondary">
-            Tagasi nimekirja
+            Back
         </a>
     </div>
 </div>
