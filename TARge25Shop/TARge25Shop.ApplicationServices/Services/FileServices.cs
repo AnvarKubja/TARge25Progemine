@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System.IO.Enumeration;
+using System.Net.Mime;
 using TARge25Shop.Core.Domain;
 using TARge25Shop.Core.Dto;
 using TARge25Shop.Core.ServiceInterface;
@@ -106,6 +108,34 @@ namespace TARge25Shop.ApplicationServices.Services
             }
 
             return null;
+        }
+
+        public void UploadFilesToDatabase(RealEstateDto dto, RealEstate domain)
+        {
+            //toimub kontroll, kas on faile või ei ole
+            if (dto.Files != null && dto.Files.Count > 0)
+            {
+                //tuleb kasutada foreachi, et mitu faili üleslaadida
+                foreach (var file in dto.Files)
+                {
+                    using (var target = new MemoryStream())
+                    {
+                        
+                        FileToDatabase files = new FileToDatabase()
+                        {
+                            Id = Guid.NewGuid(),
+                            ImageTitle = file.FileName,
+                            RealEstateId = domain.Id
+                        };
+
+                        file.CopyTo(target);
+                        files.ImageData = target.ToArray();
+
+                        _context.FileToDatabases.AddAsync(files);
+                    }
+                    
+                }
+            }
         }
     }
 }
