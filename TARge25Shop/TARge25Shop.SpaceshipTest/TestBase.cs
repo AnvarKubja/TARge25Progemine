@@ -32,6 +32,7 @@ namespace TARge25Shop.SpaceshipTest
             services.AddScoped<ISpaceshipServices, SpaceshipServices>();
             services.AddScoped<IFileServices, FileServices>();
             services.AddScoped<IHostEnvironment, MockIHostEnvironment>();
+            services.AddScoped<IKindergartenServices, KindergartenServices>();
 
             services.AddDbContext<TARge25ShopContext>(
                 x =>
