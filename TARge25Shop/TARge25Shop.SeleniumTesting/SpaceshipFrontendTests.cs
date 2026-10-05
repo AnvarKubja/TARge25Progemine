@@ -12,9 +12,13 @@ namespace TARge25Shop.SeleniumTesting
         [Fact]
         public void Should_NavigateToCreate_AddSpaceshipWithCorrectData()
         {
+            //firefoxi käskiv ja juhtiv draiver
             IWebDriver driver = new FirefoxDriver();
+            //aadress millele draiver navigeerib
             driver.Url = "https://localhost:7062/";
+            //lehelt otsitav element
             IWebElement navigateToSpaceship = driver.FindElement(By.LinkText("Spaceship"));
+            //selle elemendiga tehtav tegevus
             navigateToSpaceship.Click();
             IWebElement createInIndex = driver.FindElement(By.Id("SpaceshipNavigate"));
             createInIndex.Click();
