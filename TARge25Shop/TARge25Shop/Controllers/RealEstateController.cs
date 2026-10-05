@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TARge25Shop.Core.Dto;
 using TARge25Shop.Core.ServiceInterface;
 using TARge25Shop.Data;
@@ -163,6 +164,16 @@ namespace TARge25Shop.Controllers
                 return NotFound();
             }
 
+            var images = await _context.FileToDatabases
+                .Where(x => x.RealEstateId == Id)
+                .Select(y => new RealEstateImageViewModel
+                {
+                    ImageId = y.Id,
+                    ImageTitle = y.ImageTitle,
+                    ImageData = y.ImageData,
+                    RealEstateId = y.RealEstateId
+                }).ToArrayAsync();
+
             var vm = new RealEstateDetailViewModel();
 
             vm.Id = realEstate.Id;
@@ -172,6 +183,7 @@ namespace TARge25Shop.Controllers
             vm.BuildingType = realEstate.BuildingType;
             vm.CreatedAt = realEstate.CreatedAt;
             vm.ModifiedAt = realEstate.ModifiedAt;
+            vm.Images.AddRange(images);
 
             return View(vm);
         }
