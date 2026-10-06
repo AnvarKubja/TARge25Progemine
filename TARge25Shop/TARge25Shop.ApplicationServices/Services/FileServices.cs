@@ -120,7 +120,7 @@ namespace TARge25Shop.ApplicationServices.Services
                 {
                     using (var target = new MemoryStream())
                     {
-                        
+
                         FileToDatabase files = new FileToDatabase()
                         {
                             Id = Guid.NewGuid(),
@@ -133,9 +133,34 @@ namespace TARge25Shop.ApplicationServices.Services
 
                         _context.FileToDatabases.AddAsync(files);
                     }
-                    
+
                 }
             }
+        }
+        public async Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto)
+        {
+            var image = await _context.FileToDatabases
+                .Where(x => x.Id == dto.Id)
+                .FirstOrDefaultAsync();
+
+            _context.FileToDatabases.Remove(image);
+            await _context.SaveChangesAsync();
+
+            return image;
+        }
+
+        public async Task<List<FileToDatabase>> RemoveImagesFromDatabase(FileToDatabaseDto[] dtos)
+        {
+            foreach (var dto in dtos)
+            {
+                var image = await _context.FileToDatabases
+                                .Where(x => x.Id == dto.Id)
+                                .FirstOrDefaultAsync();
+
+                _context.FileToDatabases.Remove(image);
+                await _context.SaveChangesAsync();
+            }
+            return null;  
         }
     }
 }

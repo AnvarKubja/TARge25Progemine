@@ -1,17 +1,6 @@
 ﻿@model TARge25Shop.Models.RealEstate.RealEstateImageViewModel
 
-<div class="form-group row col-sm-12 pl-0">
-    <div class="text-left w-100 font-weight-bold mb-1">@Model.ImageTitle</div>
-    
-    @if (Model.ImageData != null && Model.ImageData.Length > 0)
-    {
-        var base64 = Convert.ToBase64String(Model.ImageData);
-        var imgSrc = $"data:image/jpeg;base64,{base64}";
-
-        <img src="@imgSrc" class="img-thumbnail d-block float-left" alt="@Model.ImageTitle" style="max-width: 300px; width: 100%;" />
-    }
-    else
-    {
-        <span class="text-muted">Pilti ei leitud</span>
-    }
+<div class="form-group row col-sm-4">
+    <div>@Model.ImageTitle</div>
+    <img src="@Model.Image" class="card-img-top" asp-append-version="true" />
 </div>

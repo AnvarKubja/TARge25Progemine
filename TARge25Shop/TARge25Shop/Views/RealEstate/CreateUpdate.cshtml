@@ -2,18 +2,14 @@
 
 @if (Model.Id.HasValue)
 {
-    <h1>
-        Update
-    </h1>
+    <h1>Update</h1>
 }
 else
 {
-    <h1>
-        Create
-    </h1>
+    <h1>Create</h1>
 }
 
-<form method="post" enctype="multipart/form-data">
+<form asp-controller="RealEstate" asp-action="@(Model.Id.HasValue ? "Update" : "Create")" method="post" enctype="multipart/form-data">
     <input asp-for="Id" type="hidden" />
     <input asp-for="CreatedAt" type="hidden" />
     <input asp-for="ModifiedAt" type="hidden" />
@@ -49,24 +45,37 @@ else
     <div class="form-group row mb-2">
         <label asp-for="Files" class="control-label"></label>
         <input asp-for="Files" multiple type="file" class="form-control" />
-
     </div>
 
     <div>
-        @foreach(var image in Model.Image)
-            {
-                <partial name="_Images" model="image"/>
-            }
-        </div>
-
+        @foreach (var images in Model.Image)
+        {
+            <div class="d-inline-block me-2 mb-2 text-center">
+                <partial name="_Images" model="images" />
+                <br />
+                <button type="submit" form="remove-image-form-@images.ImageId" class="mt-1 btn btn-danger btn-sm">
+                    Remove Image
+                </button>
+            </div>
+        }
+    </div>
+    
+    <br />
+    
     @if (Model.Id.HasValue)
     {
-        <input asp-action="update" asp-controller="realestate" type="submit" class="btn btn-success" value="Update" />
+        <input type="submit" class="btn btn-success" value="Update" />
     }
     else
     {
-        <input asp-action="create" asp-controller="realestate" type="submit" class="btn btn-success" value="Create" />
+        <input type="submit" class="btn btn-success" value="Create" />
     }
 
     <a asp-action="Index" asp-controller="realestate" class="btn btn-secondary">Back to List</a>
 </form>
+@foreach (var images in Model.Image)
+{
+    <form id="remove-image-form-@images.ImageId" asp-action="RemoveImage" asp-controller="RealEstate" method="post" style="display:none;">
+        <input type="hidden" name="ImageId" value="@images.ImageId" />
+    </form>
+}

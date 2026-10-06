@@ -30,6 +30,11 @@
                 
                 <dt class="col-sm-3 fw-bold">Building Type:</dt>
                 <dd class="col-sm-9">@Model.BuildingType</dd>
+
+                @foreach (var images in Model.Image)
+                {
+                    <partial name="_Images" model="images" />
+                }
             </dl>
         </div>
     </div>
