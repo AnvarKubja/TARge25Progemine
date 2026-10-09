@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Text;
 using TARge25Shop.Core.Domain;
 using TARge25Shop.Core.Dto;
+using TARge25Shop.Core.ServiceInterface;
 using TARge25Shop.Data;
 
 namespace TARge25Shop.ApplicationServices.Services
 {
-    public class FileServices
+    public class FileServices : IFileServices
     {
         private readonly TARge25ShopContext _context;
 
