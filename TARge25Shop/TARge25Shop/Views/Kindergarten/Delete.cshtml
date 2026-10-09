@@ -29,6 +29,11 @@
                 
                 <dt class="col-sm-3 fw-bold">Teacher Name:</dt>
                 <dd class="col-sm-9">@Model.TeacherName</dd>
+
+                @foreach (var images in Model.Image)
+                {
+                    <partial name="_Images" model="images" />
+                }
             </dl>
         </div>
     </div>
