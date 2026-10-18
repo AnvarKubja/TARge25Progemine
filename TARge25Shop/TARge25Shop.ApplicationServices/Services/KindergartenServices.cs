@@ -22,6 +22,8 @@ namespace TARge25Shop.ApplicationServices.Services
         {
             Kindergarten kindergarten = new();
 
+            if (dto.ChildrenCount < 0) dto.ChildrenCount = 0;
+
             kindergarten.Id = Guid.NewGuid();
             kindergarten.GroupName = dto.GroupName;
             kindergarten.ChildrenCount = dto.ChildrenCount;
@@ -45,6 +47,8 @@ namespace TARge25Shop.ApplicationServices.Services
             {
                 return null;
             }
+
+            if (dto.ChildrenCount < 0) dto.ChildrenCount = 0;
 
             kindergarten.GroupName = dto.GroupName;
             kindergarten.ChildrenCount = dto.ChildrenCount;
