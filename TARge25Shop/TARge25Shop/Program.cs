@@ -21,6 +21,11 @@ namespace TARge25Shop
             builder.Services.AddScoped<IFileServices, FileServices>();
             builder.Services.AddScoped<IRealEstate, RealEstateServices>();
             builder.Services.AddHttpClient<IChuckNorrisServices, ChuckNorrisServices>();
+            builder.Services.AddHttpClient<ICocktailServices, CocktailServices>(client =>
+            {
+                client.BaseAddress = new Uri(
+                    "https://www.thecocktaildb.com/api/json/v1/1/");
+            });
 
 
 
