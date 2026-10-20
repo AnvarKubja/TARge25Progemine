@@ -1,0 +1,17 @@
+﻿@model TARge25Shop.Core.Domain.CurrentWeather
+
+<div class="d-flex flex-column align-items-center justify-content-center text-center my-5">
+    <form method="get">
+        <div class="input-group shadow-sm">
+            <input class="form-control" name="city" placeholder="Linn" />
+            <button class="btn btn-primary" type="submit">Otsi</button>
+        </div>
+    </form>
+    <br />
+    <h2>@Model.City</h2>
+    <img src="https://openweathermap.org/img/wn/@(Model.Icon)@@2x.png" />
+    <p style="text-transform: capitalize;">@Model.Description</p>
+    <p>Temperatuur: @Model.Temperature °C</p>
+    <p>Niiskus: @Model.Humidity %</p>
+    <p>Tuul: @Model.WindSpeed m/s</p>
+</div>

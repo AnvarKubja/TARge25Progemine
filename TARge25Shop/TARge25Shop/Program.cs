@@ -26,6 +26,7 @@ namespace TARge25Shop
                 client.BaseAddress = new Uri(
                     "https://www.thecocktaildb.com/api/json/v1/1/");
             });
+            builder.Services.AddHttpClient<IWeatherService, WeatherService>();
 
 
 
