@@ -168,6 +168,31 @@ namespace TARge25Shop.SeleniumTesting
             Assert.NotEqual(createdAt, updatedAt);
         }
 
+        
+        /// <summary>
+        /// Kontrollib kas negatiivne laste arv salvestatakse nullina
+        /// </summary>
+        [Fact]
+        public void Should_SaveNegativeChildrenCountAsZero()
+        {
+            OpenKindergartenIndex();
+            driver.FindElement(By.Id("CreateInIndex")).Click();
+
+            string name = Guid.NewGuid().ToString();
+            FillForm(name, "-5", "Negatiivne", "Test");
+            driver.FindElement(By.Id("CU_CreateKindergarten")).Click();
+
+            IWebElement row = FindRow(name);
+            Assert.NotNull(row);
+            string childrenCount = row.FindElement(By.Id("IndexChildrenCountKindergarten")).Text;
+
+            row.FindElement(By.Id("IndexKindergartenDelete")).Click();
+            driver.FindElement(By.Id("Delete_Delete")).Click();
+
+            Assert.Equal("0", childrenCount);
+            Assert.Null(FindRow(name));
+        }
+
         // Abistavad meetodid
         private void OpenKindergartenIndex()
         {
