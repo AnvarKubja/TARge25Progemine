@@ -208,7 +208,7 @@ namespace TARge25Shop.SeleniumTesting
 
         private IWebElement FindRow(string groupName)
         {
-            var rows = driver.FindElement(By.Id("IndexTable")).FindElements(By.TagName("tr"));
+            var rows = driver.FindElements(By.CssSelector("#IndexTable tbody tr"));
 
             foreach (var row in rows)
             {
@@ -238,8 +238,7 @@ namespace TARge25Shop.SeleniumTesting
 
         private int CountRows()
         {
-            var table = driver.FindElement(By.Id("IndexTable"));
-            return table.FindElements(By.TagName("tr")).Count;
+            return driver.FindElements(By.CssSelector("#IndexTable tbody tr")).Count;
         }
     }
 }
