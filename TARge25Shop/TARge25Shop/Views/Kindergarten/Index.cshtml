@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<TARge25Shop.Models.Kindergarten.KindergartenIndexViewModel>
 
 <div>
-    <a asp-action="create" asp-controller="kindergarten" type="submit" class="btn btn-primary">Create</a>
+    <a asp-action="create" asp-controller="kindergarten" id="CreateInIndex" type="submit" class="btn btn-primary">Create</a>
 </div>
 
 <div class="h1">
     Kindergarten
 </div>
 <form method="get">
-    <table class="table table-hover">
+    <table id="IndexTable" class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Nr</th>
@@ -27,19 +27,19 @@
             @foreach (var kindergarten in Model)
             {
                 <tr>
-                    <td>@nr</td>
-                    <td>@kindergarten.GroupName</td>
-                    <td>@kindergarten.ChildrenCount</td>
-                    <td>@kindergarten.KindergartenName</td>
-                    <td>@kindergarten.TeacherName</td>
-                    <td>@kindergarten.CreatedAt</td>
-                    <td>
-                        <a asp-action="details" asp-controller="kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-primary">Details</a>
-                        <a asp-action="update" asp-controller="kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-primary">Update</a>
-                        <a asp-action="delete" asp-controller="kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-outline-danger">Delete</a>
+                    <td id="IndexRowNumberKindergarten">@nr</td>
+                    <td id="IndexGroupNameKindergarten">@kindergarten.GroupName</td>
+                    <td id="IndexChildrenCountKindergarten">@kindergarten.ChildrenCount</td>
+                    <td id="IndexKindergartenNameKindergarten">@kindergarten.KindergartenName</td>
+                    <td id="IndexTeacherNameKindergarten">@kindergarten.TeacherName</td>
+                    <td id="IndexCreatedAtKindergarten">@kindergarten.CreatedAt</td>
+                    <td id="IndexActionsKindergarten">
+                        <a id="IndexKindergartenDetails" asp-action="details" asp-controller="kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-primary">Details</a>
+                        <a id="IndexKindergartenUpdate" asp-action="update" asp-controller="kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-primary">Update</a>
+                        <a id="IndexKindergartenDelete" asp-action="delete" asp-controller="kindergarten" asp-route-id="@kindergarten.Id" class="btn btn-outline-danger">Delete</a>
                     </td>
                 </tr>
-                    nr++;
+                nr++;
 
             }
         </tbody>

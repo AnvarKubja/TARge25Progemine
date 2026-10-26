@@ -19,7 +19,7 @@
                 <dd class="col-sm-9">@Model.Id</dd>
 
                 <dt class="col-sm-3 fw-bold">Group Name:</dt>
-                <dd class="col-sm-9">@Model.GroupName</dd>
+                <dd id="Delete_GroupNameKindergarten" class="col-sm-9">@Model.GroupName</dd>
 
                 <dt class="col-sm-3 fw-bold">Children Count:</dt>
                 <dd class="col-sm-9">@Model.ChildrenCount</dd>
@@ -36,10 +36,10 @@
     <form asp-action="DeleteConfirmed" method="post">
         <input type="hidden" asp-for="Id" />
         
-        <button type="submit" class="btn btn-danger me-2">
+        <button id="Delete_Delete" type="submit" class="btn btn-danger me-2">
             <i class="bi bi-trash"></i> Yes, delete
         </button>
-        <a asp-action="Index" class="btn btn-secondary">
+        <a id="Delete_Cancel" asp-action="Index" class="btn btn-secondary">
             Cancel, back to the list
         </a>
     </form>
