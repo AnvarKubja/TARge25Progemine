@@ -129,6 +129,23 @@ namespace TARge25Shop.SeleniumTesting
             Assert.NotNull(FindRow(thisRunGroupName));
         }
 
+        /// <summary>
+        /// Create lehel "Back to List" ei tohi uut objekti salvestada
+        /// </summary>
+        [Fact]
+        public void Should_NotAddKindergarten_WhenBackToListIsClickedInCreateView()
+        {
+            OpenKindergartenIndex();
+            int rowsBefore = CountRows();
+
+            driver.FindElement(By.Id("CreateInIndex")).Click();
+            string notSavedName = Guid.NewGuid().ToString();
+            FillForm(notSavedName, "3", "Ghahaha", "Katse");
+            driver.FindElement(By.Id("CU_BackKindergarten")).Click();
+
+            Assert.Equal(rowsBefore, CountRows());
+            Assert.Null(FindRow(notSavedName));
+        }
 
         // Abistavad meetodid
         private void OpenKindergartenIndex()
@@ -165,6 +182,12 @@ namespace TARge25Shop.SeleniumTesting
             IWebElement field = driver.FindElement(By.Id(id));
             field.Clear();
             field.SendKeys(value);
+        }
+
+        private int CountRows()
+        {
+            var table = driver.FindElement(By.Id("IndexTable"));
+            return table.FindElements(By.TagName("tr")).Count;
         }
     }
 }
