@@ -68,6 +68,30 @@ namespace TARge25Shop.SeleniumTesting
             Assert.Equal("Pets", driver.FindElement(By.Id("Details_TeacherNameKindergarten")).Text);
         }
 
+        /// <summary>
+        /// Kontrollib lasteaia andmete muutmist ja muudetud andmete korrektset uuendamist tabelis
+        /// </summary>
+        [Fact]
+        public void Should_UpdateKindergarten_AndShowNewDataInIndex()
+        {
+            OpenKindergartenIndex();
+            IWebElement row = FindRow(thisRunGroupName);
+            Assert.NotNull(row);
+
+            row.FindElement(By.Id("IndexKindergartenUpdate")).Click();
+
+            // grupi jääb samaks, et objekt oleks tabelis ikka leitav
+            FillForm(thisRunGroupName, "25", "Bcdbcd", "Rita");
+            driver.FindElement(By.Id("CU_UpdateKindergarten")).Click();
+
+            row = FindRow(thisRunGroupName);
+
+            Assert.NotNull(row);
+            Assert.Equal("25", row.FindElement(By.Id("IndexChildrenCountKindergarten")).Text);
+            Assert.Equal("Bcdbcd", row.FindElement(By.Id("IndexKindergartenNameKindergarten")).Text);
+            Assert.Equal("Rita", row.FindElement(By.Id("IndexTeacherNameKindergarten")).Text);
+        }
+
 
         // Abistavad meetodid
         private void OpenKindergartenIndex()
