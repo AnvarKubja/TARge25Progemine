@@ -1,53 +1,61 @@
 ﻿@model TARge25Shop.Models.Spaceship.SpaceshipDetailViewModel
 
+<link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="~/css/spaceship.css" asp-append-version="true" />
 @{
     ViewData["Title"] = "Kosmoselaeva detailid";
 }
 
 <div class="container mt-4">
-    <h1>Kosmoselaeva detailid</h1>
-    <h4>@Model.Name</h4>
-    <hr />
+    <div class="page-header">
+        <h1><i class="bi bi-rocket-takeoff"></i> @Model.Name</h1>
+        <p>Kosmoselaeva detailid</p>
+    </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-dark text-white">
-            <h5 class="card-title mb-0">Tehnilised andmed</h5>
+    <div class="card ship-card mb-4">
+        <div class="card-header">
+            <i class="bi bi-gear"></i> Tehnilised andmed
         </div>
-        <div class="card-body">
-            <dl class="row mb-0">
-                <dt class="col-sm-3 fw-bold">ID:</dt>
+        <div class="card-body p-0">
+            <dl class="row info-list mb-0 mx-0">
+                <dt class="col-sm-3">ID</dt>
                 <dd class="col-sm-9 text-muted">@Model.Id</dd>
 
-                <dt class="col-sm-3 fw-bold">Nimi:</dt>
+                <dt class="col-sm-3">Nimi</dt>
                 <dd class="col-sm-9">@Model.Name</dd>
 
-                <dt class="col-sm-3 fw-bold">Type:</dt>
-                <dd class="col-sm-9">@Model.ShipType</dd>
+                <dt class="col-sm-3">Type</dt>
+                <dd class="col-sm-9"><span class="badge rounded-pill bg-info text-dark">@Model.ShipType</span></dd>
 
-                <dt class="col-sm-3 fw-bold">Crew:</dt>
-                <dd class="col-sm-9">@Model.Crew</dd>
+                <dt class="col-sm-3">Crew</dt>
+                <dd class="col-sm-9"><i class="bi bi-people"></i> @Model.Crew</dd>
 
-                <dt class="col-sm-3 fw-bold">EnginePower:</dt>
-                <dd class="col-sm-9">@Model.EnginePower</dd>
+                <dt class="col-sm-3">EnginePower</dt>
+                <dd class="col-sm-9"><i class="bi bi-lightning-charge-fill text-warning"></i> @Model.EnginePower</dd>
 
-                <dt class="col-sm-3 fw-bold">Created at:</dt>
+                <dt class="col-sm-3">Created at</dt>
                 <dd class="col-sm-9">@Model.CreatedAt</dd>
 
-                <dt class="col-sm-3 fw-bold">Updated at:</dt>
+                <dt class="col-sm-3">Updated at</dt>
                 <dd class="col-sm-9">@Model.UpdatedAt</dd>
             </dl>
-
-            @foreach (var images in Model.Images)
-            {
-                <partial name="_Images" model="images" />
-            }
-
         </div>
     </div>
 
-    <div class="d-flex gap-2">
-        <a asp-action="Index" class="btn btn-secondary">
-            Tagasi nimekirja
-        </a>
-    </div>
+    @if (Model.Images.Any())
+    {
+        <h5 class="mb-3"><i class="bi bi-images"></i> Pildid</h5>
+        <div class="row g-3 mb-4">
+            @foreach (var images in Model.Images)
+            {
+                <div class="col-6 col-md-4 col-lg-3">
+                    <partial name="_Images" model="images" />
+                </div>
+            }
+        </div>
+    }
+
+    <a asp-action="Index" class="btn btn-space">
+        <i class="bi bi-arrow-left"></i> Tagasi nimekirja
+    </a>
 </div>

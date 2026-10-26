@@ -1,47 +1,75 @@
 ﻿@model IEnumerable<TARge25Shop.Models.Spaceship.SpaceshipIndexViewModel>
 
-<div>
-    <a asp-action="create" asp-controller="spaceship" type="submit" class="btn btn-primary">Create</a>
+<link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="~/css/spaceship.css" asp-append-version="true" />
+@{
+    ViewData["Title"] = "Spaceships";
+}
+
+<div class="container mt-4">
+    <div class="page-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1><i class="bi bi-rocket-takeoff"></i> Spaceships</h1>
+            <p>Laevu kokku: @Model.Count()</p>
+        </div>
+        <a asp-action="create" asp-controller="spaceship" class="btn btn-light btn-pill">
+            <i class="bi bi-plus-lg"></i> Create
+        </a>
+    </div>
+
+    <div class="card ship-card">
+        @if (!Model.Any())
+        {
+            <div class="text-center text-muted p-5">
+                <i class="bi bi-stars fs-1"></i>
+                <p class="mt-2 mb-0">Kosmoselaevu pole veel lisatud.</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table ship-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nr</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Created at</th>
+                            <th scope="col">Crew</th>
+                            <th scope="col">EnginePower</th>
+                            <th scope="col" class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int nr = 1;
+                        }
+                        @foreach (var spaceship in Model)
+                        {
+                            <tr>
+                                <td class="text-muted">@nr</td>
+                                <td class="fw-bold">@spaceship.Name</td>
+                                <td><span class="badge rounded-pill bg-info text-dark">@spaceship.ShipType</span></td>
+                                <td>@spaceship.CreatedAt</td>
+                                <td><i class="bi bi-people"></i> @spaceship.Crew</td>
+                                <td><i class="bi bi-lightning-charge-fill text-warning"></i> @spaceship.EnginePower</td>
+                                <td class="text-end">
+                                    <a asp-action="details" asp-controller="spaceship" asp-route-id="@spaceship.Id" class="btn btn-sm btn-outline-primary btn-pill">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
+                                    <a asp-action="update" asp-controller="spaceship" asp-route-id="@spaceship.Id" class="btn btn-sm btn-outline-success btn-pill">
+                                        <i class="bi bi-pencil"></i> Update
+                                    </a>
+                                    <a asp-action="delete" asp-controller="spaceship" asp-route-id="@spaceship.Id" class="btn btn-sm btn-outline-danger btn-pill">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            nr++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
 </div>
-
-<div class="h1">
-    Spaceships
-</div>
-<form method="get">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Nr</th>
-                <th scope="col">Name</th>
-                <th scope="col">Type</th>
-                <th scope="col">Created at</th>
-                <th scope="col">Crew</th>
-                <th scope="col">EnginePower</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int nr = 1;
-            }
-            @foreach (var spaceship in Model)
-            {
-                <tr>
-                    <td>@nr</td>
-                    <td>@spaceship.Name</td>
-                    <td>@spaceship.ShipType</td>
-                    <td>@spaceship.CreatedAt</td>
-                    <td>@spaceship.Crew</td>
-                    <td>@spaceship.EnginePower</td>
-                    <td>
-                        <a asp-action="details" asp-controller="spaceship" asp-route-id="@spaceship.Id" class="btn btn-primary">Details</a>
-                        <a asp-action="update" asp-controller="spaceship" asp-route-id="@spaceship.Id" class="btn btn-primary">Update</a>
-                        <a asp-action="delete" asp-controller="spaceship" asp-route-id="@spaceship.Id" class="btn btn-outline-danger">Delete</a>
-                    </td>
-                </tr>
-                    nr++;
-
-            }
-        </tbody>
-    </table>
-</form>

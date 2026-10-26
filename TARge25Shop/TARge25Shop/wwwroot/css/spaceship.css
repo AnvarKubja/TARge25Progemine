@@ -1,0 +1,127 @@
+/* Kosmoselaevade vaadete stiil. Pane faili asukohaks wwwroot/css/spaceship.css */
+
+/* Ülemine bänner */
+.page-header {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .2);
+}
+
+.page-header h1 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.page-header p {
+    margin: .25rem 0 0;
+    opacity: .75;
+}
+
+.page-header.danger {
+    background: linear-gradient(135deg, #3b0d0d, #b02a37);
+}
+
+/* Kaardid */
+.ship-card {
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .08);
+    overflow: hidden;
+}
+
+.ship-card .card-header {
+    background: #203a43;
+    color: #fff;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+}
+
+.ship-card.danger .card-header {
+    background: #b02a37;
+}
+
+/* Tabel */
+.ship-table thead th {
+    background: #203a43;
+    color: #fff;
+    border: 0;
+    padding: 1rem;
+}
+
+.ship-table td {
+    padding: 1rem;
+}
+
+.ship-table tbody tr:hover {
+    background: #eef4f7;
+}
+
+/* Andmete loend */
+.info-list dt,
+.info-list dd {
+    padding: .75rem 1rem;
+    margin: 0;
+    border-bottom: 1px solid #eee;
+}
+
+.info-list dt {
+    color: #203a43;
+}
+
+/* Nupud */
+.btn-space {
+    background: linear-gradient(135deg, #2c5364, #4a7fa0);
+    border: 0;
+    color: #fff;
+    border-radius: 2rem;
+    padding: .5rem 1.25rem;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.btn-space:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(44, 83, 100, .4);
+}
+
+.btn-pill {
+    border-radius: 2rem;
+}
+
+/* Pildid */
+.img-card {
+    border: 0;
+    border-radius: .75rem;
+    overflow: hidden;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .12);
+    transition: transform .2s, box-shadow .2s;
+}
+
+.img-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .2);
+}
+
+.img-card img {
+    object-fit: cover;
+    height: 180px;
+    transition: transform .3s;
+}
+
+.img-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Vormi sisendid */
+.ship-form .form-control {
+    border-radius: .5rem;
+    padding: .6rem .9rem;
+}
+
+.ship-form .form-control:focus {
+    border-color: #4a7fa0;
+    box-shadow: 0 0 0 .2rem rgba(74, 127, 160, .25);
+}

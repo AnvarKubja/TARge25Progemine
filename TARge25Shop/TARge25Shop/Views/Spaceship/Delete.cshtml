@@ -1,51 +1,60 @@
 ﻿@model TARge25Shop.Models.Spaceship.SpaceshipDeleteViewModel
 
 <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="~/css/spaceship.css" asp-append-version="true" />
 @{
     ViewData["Title"] = "Kustuta kosmoselaev";
 }
 
 <div class="container mt-4">
-    <h1 class="text-danger">Kustuta kosmoselaev</h1>
-    <h3>Kas oled kindel, et soovid selle kosmoselaeva kustutada?</h3>
-    <hr />
+    <div class="page-header danger">
+        <h1><i class="bi bi-exclamation-triangle"></i> Kustuta kosmoselaev</h1>
+        <p>Kas oled kindel, et soovid selle kosmoselaeva kustutada?</p>
+    </div>
 
-    <div class="card border-danger mb-4">
-        <div class="card-header bg-danger text-white">
-            <h4 class="card-title mb-0">Kosmoselaeva andmed</h4>
+    <div class="card ship-card danger mb-4">
+        <div class="card-header">
+            <i class="bi bi-rocket-takeoff"></i> Kosmoselaeva andmed
         </div>
-        <div class="card-body">
-            <dl class="row mb-0">
-                <dt class="col-sm-3 fw-bold">ID:</dt>
-                <dd class="col-sm-9">@Model.Id</dd>
+        <div class="card-body p-0">
+            <dl class="row info-list mb-0 mx-0">
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9 text-muted">@Model.Id</dd>
 
-                <dt class="col-sm-3 fw-bold">Name:</dt>
+                <dt class="col-sm-3">Name</dt>
                 <dd class="col-sm-9">@Model.Name</dd>
 
-                <dt class="col-sm-3 fw-bold">Type:</dt>
-                <dd class="col-sm-9">@Model.ShipType</dd>
+                <dt class="col-sm-3">Type</dt>
+                <dd class="col-sm-9"><span class="badge rounded-pill bg-info text-dark">@Model.ShipType</span></dd>
 
-                <dt class="col-sm-3 fw-bold">Crew:</dt>
-                <dd class="col-sm-9">@Model.Crew</dd>
-                
-                <dt class="col-sm-3 fw-bold">EnginePower:</dt>
-                <dd class="col-sm-9">@Model.EnginePower</dd>
+                <dt class="col-sm-3">Crew</dt>
+                <dd class="col-sm-9"><i class="bi bi-people"></i> @Model.Crew</dd>
+
+                <dt class="col-sm-3">EnginePower</dt>
+                <dd class="col-sm-9"><i class="bi bi-lightning-charge-fill text-warning"></i> @Model.EnginePower</dd>
             </dl>
         </div>
     </div>
 
-    @foreach (var images in Model.Images)
+    @if (Model.Images.Any())
     {
-        <partial name="_Images" model="images" />
+        <div class="row g-3 mb-4">
+            @foreach (var images in Model.Images)
+            {
+                <div class="col-6 col-md-4 col-lg-3">
+                    <partial name="_Images" model="images" />
+                </div>
+            }
+        </div>
     }
 
     <form asp-action="DeleteConfirmed" method="post">
         <input type="hidden" asp-for="Id" />
-        
-        <button type="submit" class="btn btn-danger me-2">
+
+        <button type="submit" class="btn btn-danger btn-pill me-2">
             <i class="bi bi-trash"></i> Jah, kustuta
         </button>
-        <a asp-action="Index" class="btn btn-secondary">
+        <a asp-action="Index" class="btn btn-outline-secondary btn-pill">
             Tühista ja tagasi nimekirja
         </a>
     </form>
