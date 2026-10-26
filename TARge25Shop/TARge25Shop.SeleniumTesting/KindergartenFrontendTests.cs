@@ -92,6 +92,22 @@ namespace TARge25Shop.SeleniumTesting
             Assert.Equal("Rita", row.FindElement(By.Id("IndexTeacherNameKindergarten")).Text);
         }
 
+        /// <summary>
+        /// Kontrollib vastava lasteaia kustutamist
+        /// </summary>
+        [Fact]
+        public void Should_DeleteKindergarten_ViaDeleteView()
+        {
+            OpenKindergartenIndex();
+            IWebElement row = FindRow(thisRunGroupName);
+            Assert.NotNull(row);
+
+            row.FindElement(By.Id("IndexKindergartenDelete")).Click();
+            driver.FindElement(By.Id("Delete_Delete")).Click();
+
+            Assert.Null(FindRow(thisRunGroupName));
+        }
+
 
         // Abistavad meetodid
         private void OpenKindergartenIndex()
