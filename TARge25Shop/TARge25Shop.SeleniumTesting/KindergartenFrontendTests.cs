@@ -72,6 +72,7 @@ namespace TARge25Shop.SeleniumTesting
         /// Kontrollib lasteaia andmete muutmist ja muudetud andmete korrektset uuendamist tabelis
         /// </summary>
         [Fact]
+        [Order(5)]
         public void Should_UpdateKindergarten_AndShowNewDataInIndex()
         {
             OpenKindergartenIndex();
@@ -96,6 +97,7 @@ namespace TARge25Shop.SeleniumTesting
         /// Kontrollib vastava lasteaia kustutamist
         /// </summary>
         [Fact]
+        [Order(7)]
         public void Should_DeleteKindergarten_ViaDeleteView()
         {
             OpenKindergartenIndex();
@@ -114,6 +116,7 @@ namespace TARge25Shop.SeleniumTesting
         /// Delete lehel "Cancel" ei tohi objekti kustutada
         /// </summary>
         [Fact]
+        [Order(3)]
         public void Should_NotDeleteKindergarten_WhenCancelIsClickedInDeleteView()
         {
             OpenKindergartenIndex();
@@ -133,6 +136,7 @@ namespace TARge25Shop.SeleniumTesting
         /// Create lehel "Back to List" ei tohi uut objekti salvestada
         /// </summary>
         [Fact]
+        [Order(4)]
         public void Should_NotAddKindergarten_WhenBackToListIsClickedInCreateView()
         {
             OpenKindergartenIndex();
@@ -151,6 +155,7 @@ namespace TARge25Shop.SeleniumTesting
         /// Pärast muutmist peab "Updated at" olema erinev kui "Created at" ja Details lehel peavad olema uued andmed
         /// </summary>
         [Fact]
+        [Order(6)]
         public void Should_ShowNewDataAndDifferentUpdatedAt_InDetails_AfterUpdate()
         {
             OpenKindergartenIndex();
@@ -173,6 +178,7 @@ namespace TARge25Shop.SeleniumTesting
         /// Kontrollib kas negatiivne laste arv salvestatakse nullina
         /// </summary>
         [Fact]
+        [Order(8)]
         public void Should_SaveNegativeChildrenCountAsZero()
         {
             OpenKindergartenIndex();
