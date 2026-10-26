@@ -48,6 +48,26 @@ namespace TARge25Shop.SeleniumTesting
             Assert.Equal("Pets", row.FindElement(By.Id("IndexTeacherNameKindergarten")).Text);
         }
 
+        /// <summary>
+        /// Kontrollib, kas tabelist detailide vaatesse liikumisel kuvatakse eelnevalt loodud lasteaia andmed korrektselt
+        /// </summary>
+        [Fact]
+        [Order(2)]
+        public void Should_ShowDetails_OfCreatedKindergarten()
+        {
+            OpenKindergartenIndex();
+            IWebElement row = FindRow(thisRunGroupName);
+            Assert.NotNull(row);
+
+            row.FindElement(By.Id("IndexKindergartenDetails")).Click();
+
+            Assert.False(string.IsNullOrEmpty(driver.FindElement(By.Id("Details_IdKindergarten")).Text));
+            Assert.Equal(thisRunGroupName, driver.FindElement(By.Id("Details_GroupNameKindergarten")).Text);
+            Assert.Equal("20", driver.FindElement(By.Id("Details_ChildrenCountKindergarten")).Text);
+            Assert.Equal("Asdasdasd", driver.FindElement(By.Id("Details_KindergartenNameKindergarten")).Text);
+            Assert.Equal("Pets", driver.FindElement(By.Id("Details_TeacherNameKindergarten")).Text);
+        }
+
 
         // Abistavad meetodid
         private void OpenKindergartenIndex()
