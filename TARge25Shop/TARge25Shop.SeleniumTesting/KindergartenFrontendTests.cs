@@ -108,6 +108,27 @@ namespace TARge25Shop.SeleniumTesting
             Assert.Null(FindRow(thisRunGroupName));
         }
 
+        // 4 LISATESTI
+
+        /// <summary>
+        /// Delete lehel "Cancel" ei tohi objekti kustutada
+        /// </summary>
+        [Fact]
+        public void Should_NotDeleteKindergarten_WhenCancelIsClickedInDeleteView()
+        {
+            OpenKindergartenIndex();
+            IWebElement row = FindRow(thisRunGroupName);
+            Assert.NotNull(row);
+
+            row.FindElement(By.Id("IndexKindergartenDelete")).Click();
+
+            Assert.Equal(thisRunGroupName, driver.FindElement(By.Id("Delete_GroupNameKindergarten")).Text);
+
+            driver.FindElement(By.Id("Delete_Cancel")).Click();
+
+            Assert.NotNull(FindRow(thisRunGroupName));
+        }
+
 
         // Abistavad meetodid
         private void OpenKindergartenIndex()
