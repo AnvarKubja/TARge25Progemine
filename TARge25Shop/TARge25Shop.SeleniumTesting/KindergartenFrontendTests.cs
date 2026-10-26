@@ -147,6 +147,27 @@ namespace TARge25Shop.SeleniumTesting
             Assert.Null(FindRow(notSavedName));
         }
 
+        /// <summary>
+        /// Pärast muutmist peab "Updated at" olema erinev kui "Created at" ja Details lehel peavad olema uued andmed
+        /// </summary>
+        [Fact]
+        public void Should_ShowNewDataAndDifferentUpdatedAt_InDetails_AfterUpdate()
+        {
+            OpenKindergartenIndex();
+            IWebElement row = FindRow(thisRunGroupName);
+            Assert.NotNull(row);
+
+            row.FindElement(By.Id("IndexKindergartenDetails")).Click();
+
+            string createdAt = driver.FindElement(By.Id("Details_CreatedAtKindergarten")).Text;
+            string updatedAt = driver.FindElement(By.Id("Details_UpdatedAtKindergarten")).Text;
+
+            Assert.Equal("25", driver.FindElement(By.Id("Details_ChildrenCountKindergarten")).Text);
+            Assert.Equal("Bcdbcd", driver.FindElement(By.Id("Details_KindergartenNameKindergarten")).Text);
+            Assert.Equal("Rita", driver.FindElement(By.Id("Details_TeacherNameKindergarten")).Text);
+            Assert.NotEqual(createdAt, updatedAt);
+        }
+
         // Abistavad meetodid
         private void OpenKindergartenIndex()
         {
