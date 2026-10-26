@@ -1,0 +1,89 @@
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
+using System;
+using System.Buffers.Text;
+using System.Collections.Generic;
+using System.Text;
+using Xunit;
+
+namespace TARge25Shop.SeleniumTesting
+{
+    [TestCaseOrderer("TARge25Shop.SeleniumTesting.PriorityOrderer", "TARge25Shop.SeleniumTesting")]
+    public class KindergartenFrontendTests : IDisposable
+    {
+        private const string BaseUrl = "https://localhost:7062/";
+        private readonly IWebDriver driver;
+        private static string thisRunGroupName;
+
+        public KindergartenFrontendTests()
+        {
+            var options = new FirefoxOptions();
+            driver = new FirefoxDriver(options);
+        }
+
+        public void Dispose()
+        {
+            driver.Quit();
+        }
+
+        /// <summary>
+        /// Kontrollib uue lasteaia edukat loomist ja sisestatud andmete korrektset kuvamist tabelis
+        /// </summary>
+        [Fact]
+        [Order(1)]
+        public void Should_CreateKindergarten_AndShowItInIndex()
+        {
+            OpenKindergartenIndex();
+            driver.FindElement(By.Id("CreateInIndex")).Click();
+
+            thisRunGroupName = Guid.NewGuid().ToString();
+            FillForm(thisRunGroupName, "20", "Asdasdasd", "Pets");
+            driver.FindElement(By.Id("CU_CreateKindergarten")).Click();
+
+            IWebElement row = FindRow(thisRunGroupName);
+
+            Assert.NotNull(row);
+            Assert.Equal("20", row.FindElement(By.Id("IndexChildrenCountKindergarten")).Text);
+            Assert.Equal("Asdasdasd", row.FindElement(By.Id("IndexKindergartenNameKindergarten")).Text);
+            Assert.Equal("Pets", row.FindElement(By.Id("IndexTeacherNameKindergarten")).Text);
+        }
+
+
+        // Abistavad meetodid
+        private void OpenKindergartenIndex()
+        {
+            driver.Navigate().GoToUrl(BaseUrl);
+            driver.FindElement(By.Id("KindergartenNavigate")).Click();
+        }
+
+        private IWebElement FindRow(string groupName)
+        {
+            var rows = driver.FindElement(By.Id("IndexTable")).FindElements(By.TagName("tr"));
+
+            foreach (var row in rows)
+            {
+                if (row.FindElement(By.Id("IndexGroupNameKindergarten")).Text == groupName)
+                {
+                    return row;
+                }
+            }
+
+            return null;
+        }
+
+        private void FillForm(string groupName, string childrenCount, string kindergartenName, string teacherName)
+        {
+            FillField("CU_GroupNameKindergarten", groupName);
+            FillField("CU_ChildrenCountKindergarten", childrenCount);
+            FillField("CU_KindergartenNameKindergarten", kindergartenName);
+            FillField("CU_TeacherNameKindergarten", teacherName);
+        }
+
+        private void FillField(string id, string value)
+        {
+            IWebElement field = driver.FindElement(By.Id(id));
+            field.Clear();
+            field.SendKeys(value);
+        }
+    }
+}
