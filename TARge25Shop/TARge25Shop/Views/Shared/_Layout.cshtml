@@ -8,56 +8,209 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TARge25Shop.styles.css" asp-append-version="true" />
+    <style>
+        /* Taust sama mis avalehel */
+        body {
+            margin: 0;
+            padding-bottom: 50px; /* ruum tegumiriba jaoks */
+            min-height: 100vh;
+            font-family: Tahoma, Verdana, sans-serif;
+            font-size: 14px;
+            background: #008080 url("/images/taust.jpg") center / cover no-repeat;
+        }
+
+        /* Aken (vaikimisi suur, suurust saab nurgast muuta) */
+        .xp-window {
+            width: 90vw;
+            height: 80vh;
+            min-width: 400px;
+            min-height: 200px;
+            max-width: 98vw;
+            resize: both;
+            overflow: auto;
+            display: flex;            /* et jalus jääks akna põhja */
+            flex-direction: column;
+            margin: 20px auto;
+            background: #ece9d8;
+            border: 3px solid #0054e3;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .xp-titlebar {
+            background: linear-gradient(to bottom, #0a5fe8 0%, #0054e3 40%, #0a3fc2 100%);
+            color: white;
+            font-weight: bold;
+            padding: 5px 8px;
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-shadow: 1px 1px #0a246a;
+        }
+        .xp-buttons span {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            line-height: 20px;
+            text-align: center;
+            margin-left: 2px;
+            border: 1px solid white;
+            border-radius: 3px;
+            background: #2a6ff0;
+        }
+        .xp-buttons span.close { background: #e0452b; }
+
+        /* Menüüriba (navigatsioon) */
+        .xp-menu {
+            background: #ece9d8;
+            border-bottom: 1px solid #aca899;
+            padding: 3px 6px;
+        }
+        .xp-menu a {
+            display: inline-block;
+            padding: 3px 10px;
+            color: black;
+            text-decoration: none;
+        }
+        .xp-menu a:hover {
+            background: #316ac5;
+            color: white;
+        }
+
+        /* Sisu */
+        .xp-content {
+            flex: 1;                  /* sisu täidab vaba ruumi */
+            background: white;
+            margin: 4px;
+            padding: 20px;
+            border: 2px inset #aca899;
+        }
+        .xp-footer {
+            padding: 4px 10px;
+            font-size: 12px;
+            color: #444;
+        }
+
+        /* Tegumiriba (sama mis avalehel) */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 36px;
+            background: #c0c0c0;
+            border-top: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+            font-family: "Courier New", monospace;
+            z-index: 1000;
+        }
+        .start {
+            font-weight: bold;
+            border: 2px solid;
+            border-color: #fff #000 #000 #fff;
+            padding: 2px 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Start menüü (sama mis avalehel) */
+        .start-menu {
+            display: none;
+            position: fixed;
+            bottom: 38px;
+            left: 0;
+            width: 200px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #fff #000 #000 #fff;
+            font-family: "Courier New", monospace;
+            z-index: 1001;
+        }
+        .start-menu a {
+            display: block;
+            padding: 8px 12px;
+            color: black;
+            text-decoration: none;
+        }
+        .start-menu a:hover {
+            background: #000080;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TARge25Shop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Spaceship" asp-action="Index">Spaceship</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="realestate" asp-action="Index">RealEstate</a>
-                        </li
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="chucknorris" asp-action="Index">ChuckNorris</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="cocktail" asp-action="Index">Cocktail</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <div class="xp-window">
+        <div class="xp-titlebar">
+            <span>📁 @ViewData["Title"] - TARge25Shop</span>
+            <div class="xp-buttons">
+                <span>_</span><span>□</span><span class="close">X</span>
+            </div>
+        </div>
+
+        <nav class="xp-menu">
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <a asp-area="" asp-controller="Spaceship" asp-action="Index">Spaceship</a>
+            <a asp-area="" asp-controller="realestate" asp-action="Index">RealEstate</a>
+            <a asp-area="" asp-controller="chucknorris" asp-action="Index">ChuckNorris</a>
+            <a asp-area="" asp-controller="cocktail" asp-action="Index">Cocktail</a>
+        </nav>
+
+        <div class="xp-content">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <div class="xp-footer">
             &copy; 2026 - TARge25Shop - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </div>
+
+    <!-- Start menüü -->
+    <div class="start-menu" id="startMenu">
+        <a asp-controller="Home" asp-action="Index">🖥️ Desktop</a>
+        <a asp-controller="Home" asp-action="Privacy">📁 Privacy</a>
+        <a asp-controller="Spaceship" asp-action="Index">📁 Spaceship</a>
+        <a asp-controller="realestate" asp-action="Index">📁 Real Estate</a>
+        <a asp-controller="chucknorris" asp-action="Index">📁 Chuck Norris</a>
+        <a asp-controller="cocktail" asp-action="Index">📁 Cocktails</a>
+    </div>
+
+    <!-- Tegumiriba -->
+    <div class="taskbar">
+        <div class="start" id="startButton">Start</div>
+        <div id="clock"></div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // Kell
+        function updateClock() {
+            document.getElementById("clock").textContent = new Date().toLocaleTimeString();
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Start menüü
+        const startButton = document.getElementById("startButton");
+        const startMenu = document.getElementById("startMenu");
+
+        startButton.addEventListener("click", e => {
+            e.stopPropagation();
+            startMenu.style.display = startMenu.style.display === "block" ? "none" : "block";
+        });
+
+        document.addEventListener("click", () => {
+            startMenu.style.display = "none";
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

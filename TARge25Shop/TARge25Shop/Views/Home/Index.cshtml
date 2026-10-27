@@ -1,8 +1,248 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = null; // peidab tavalise ASP.NET menüü, et töölaud täidaks terve ekraani
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #008080 url("/images/taust.jpg") center / cover no-repeat;
+            font-family: "Courier New", monospace;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* Kaust töölaual */
+        .folder {
+            position: absolute;
+            width: 90px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+            touch-action: none; /* lubab lohistamist ka telefonis */
+        }
+        .folder {
+            /* tekstile must ääris */
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+        .folder .icon {
+            font-size: 48px;
+        }
+        .folder:hover { background: #000080; }
+        .folder.selected { background: #000080; }
+
+        /* Valiku ruut */
+        .selection-box {
+            display: none;
+            position: fixed;
+            border: 1px dotted white;
+            background: rgba(0, 0, 128, 0.3);
+            pointer-events: none;
+        }
+
+        /* Tegumiriba all */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 36px;
+            background: #c0c0c0;
+            border-top: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+        }
+        .start {
+            font-weight: bold;
+            border: 2px solid;
+            border-color: #fff #000 #000 #fff;
+            padding: 2px 10px;
+            cursor: pointer;
+        }
+
+        /* Start menüü */
+        .start-menu {
+            display: none;
+            position: fixed;
+            bottom: 38px;
+            left: 0;
+            width: 200px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #fff #000 #000 #fff;
+        }
+        .start-menu a {
+            display: block;
+            padding: 8px 12px;
+            color: black;
+            text-decoration: none;
+        }
+        .start-menu a:hover {
+            background: #000080;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Kaustad (igaühel peab olema unikaalne id!) -->
+    <a class="folder" id="privacy" style="left:20px; top:20px" asp-controller="Home" asp-action="Privacy">
+        <div class="icon">📁</div>
+        Privacy
+    </a>
+    <a class="folder" id="spaceship" style="left:20px; top:140px" asp-controller="Spaceship" asp-action="Index">
+        <div class="icon">📁</div>
+        Spaceship
+    </a>
+    <a class="folder" id="realestate" style="left:20px; top:260px" asp-controller="realestate" asp-action="Index">
+        <div class="icon">📁</div>
+        Real Estate
+    </a>
+    <a class="folder" id="chucknorris" style="left:20px; top:380px" asp-controller="chucknorris" asp-action="Index">
+        <div class="icon">📁</div>
+        Chuck Norris
+    </a>
+    <a class="folder" id="cocktails" style="left:20px; top:500px" asp-controller="cocktail" asp-action="Index">
+        <div class="icon">📁</div>
+        Cocktails
+    </a>
+
+    <!-- Start menüü -->
+    <div class="start-menu" id="startMenu">
+        <a asp-controller="Home" asp-action="Privacy">📁 Privacy</a>
+        <a asp-controller="Spaceship" asp-action="Index">📁 Spaceship</a>
+        <a asp-controller="realestate" asp-action="Index">📁 Real Estate</a>
+        <a asp-controller="chucknorris" asp-action="Index">📁 Chuck Norris</a>
+        <a asp-controller="cocktail" asp-action="Index">📁 Cocktails</a>
+        <a href="#" onclick="localStorage.clear(); location.reload();">🔄 Reset icons</a>
+    </div>
+
+    <div class="taskbar">
+        <div class="start" id="startButton">Start</div>
+        <div id="clock"></div>
+    </div>
+
+    <script>
+        // Kell
+        function updateClock() {
+            document.getElementById("clock").textContent = new Date().toLocaleTimeString();
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Start menüü
+        const startButton = document.getElementById("startButton");
+        const startMenu = document.getElementById("startMenu");
+
+        startButton.addEventListener("click", e => {
+            e.stopPropagation();
+            startMenu.style.display = startMenu.style.display === "block" ? "none" : "block";
+        });
+
+        // Klõps mujale sulgeb menüü
+        document.addEventListener("click", () => {
+            startMenu.style.display = "none";
+        });
+
+        // Valiku ruut (hiirega tühjal alal lohistades)
+        const box = document.createElement("div");
+        box.className = "selection-box";
+        document.body.appendChild(box);
+        let selStart = null;
+
+        document.body.addEventListener("pointerdown", e => {
+            if (e.target !== document.body) return; // ainult tühjal töölaual
+            document.querySelectorAll(".folder").forEach(f => f.classList.remove("selected"));
+            selStart = { x: e.clientX, y: e.clientY };
+        });
+
+        document.addEventListener("pointermove", e => {
+            if (!selStart) return;
+
+            const left = Math.min(selStart.x, e.clientX);
+            const top = Math.min(selStart.y, e.clientY);
+            const width = Math.abs(e.clientX - selStart.x);
+            const height = Math.abs(e.clientY - selStart.y);
+
+            box.style.display = "block";
+            box.style.left = left + "px";
+            box.style.top = top + "px";
+            box.style.width = width + "px";
+            box.style.height = height + "px";
+
+            // Märgi kaustad, mis ruuduga kokku puutuvad
+            document.querySelectorAll(".folder").forEach(f => {
+                const r = f.getBoundingClientRect();
+                const hit = r.left < left + width && r.right > left &&
+                            r.top < top + height && r.bottom > top;
+                f.classList.toggle("selected", hit);
+            });
+        });
+
+        document.addEventListener("pointerup", () => {
+            selStart = null;
+            box.style.display = "none";
+        });
+
+        // Kaustade lohistamine
+        document.querySelectorAll(".folder").forEach(folder => {
+            let offsetX, offsetY, startX, startY, dragged;
+
+            // Taasta salvestatud asukoht
+            const saved = localStorage.getItem("pos-" + folder.id);
+            if (saved) {
+                const pos = JSON.parse(saved);
+                folder.style.left = pos.x + "px";
+                folder.style.top = pos.y + "px";
+            }
+
+            folder.addEventListener("pointerdown", e => {
+                dragged = false;
+                startX = e.clientX;
+                startY = e.clientY;
+                offsetX = e.clientX - folder.offsetLeft;
+                offsetY = e.clientY - folder.offsetTop;
+                folder.setPointerCapture(e.pointerId);
+
+                folder.onpointermove = e => {
+                    // Lohistamine algab alles siis, kui hiirt on liigutatud 5px
+                    if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
+                        dragged = true;
+                    }
+                    if (dragged) {
+                        folder.style.left = (e.clientX - offsetX) + "px";
+                        folder.style.top = (e.clientY - offsetY) + "px";
+                    }
+                };
+            });
+
+            folder.addEventListener("pointerup", () => {
+                folder.onpointermove = null;
+                if (dragged) {
+                    localStorage.setItem("pos-" + folder.id,
+                        JSON.stringify({ x: folder.offsetLeft, y: folder.offsetTop }));
+                }
+            });
+
+            // Kui kausta lohistati, ära ava linki
+            folder.addEventListener("click", e => {
+                if (dragged) e.preventDefault();
+            });
+
+            folder.addEventListener("dragstart", e => e.preventDefault());
+        });
+    </script>
+
+</body>
+</html>
