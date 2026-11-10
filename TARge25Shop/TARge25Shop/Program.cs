@@ -17,6 +17,7 @@ namespace TARge25Shop
             builder.Services.AddDbContext<TARge25ShopContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddScoped<IEmailServices, EmailServices>();
             builder.Services.AddScoped<ISpaceshipServices, SpaceshipServices>();
             builder.Services.AddScoped<IFileServices, FileServices>();
             builder.Services.AddScoped<IRealEstate, RealEstateServices>();

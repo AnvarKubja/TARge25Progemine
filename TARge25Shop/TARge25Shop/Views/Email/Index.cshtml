@@ -1,0 +1,70 @@
+﻿@model TARge25Shop.Models.Email.EmailViewModel
+
+@{
+    ViewData["Title"] = "Email";
+}
+
+<div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+            <strong>Edukas!</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <h2>Saada e-mail</h2>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- enctype="multipart/form-data" on failide saatmiseks kohustuslik! -->
+            <form asp-action="SendEmail" method="post" enctype="multipart/form-data">
+                
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Saaja (To) -->
+                <div class="form-group mb-3">
+                    <label asp-for="To" class="form-label">Saaja e-mail</label>
+                    <input asp-for="To" class="form-control" type="email" placeholder="näide@domeen.ee" required />
+                    <span asp-validation-for="To" class="text-danger"></span>
+                </div>
+
+                <!-- Teema (Subject) -->
+                <div class="form-group mb-3">
+                    <label asp-for="Subject" class="form-label">Teema</label>
+                    <input asp-for="Subject" class="form-control" placeholder="Kirja pealkiri" required />
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+
+                <!-- Sisu (Body) -->
+                <div class="form-group mb-3">
+                    <label asp-for="Body" class="form-label">Sisu</label>
+                    <textarea asp-for="Body" class="form-control" rows="5" placeholder="Kirjuta oma sõnum siia..."></textarea>
+                    <span asp-validation-for="Body" class="text-danger"></span>
+                </div>
+
+                <!-- Manused (Attachments) -->
+                <div class="form-group mb-4">
+                    <label class="form-label">Manused (vali üks või mitu faili)</label>
+                    <!-- name="files" ei ole siin kriitiline, sest kontrolleris loed otse Request.Form.Files,
+                         kuid multiple lubab mitut faili korraga valida -->
+                    <input type="file" name="files" class="form-control" multiple />
+                </div>
+
+                <!-- Nupud -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Saada e-mail</button>
+                    <a asp-action="Index" class="btn btn-secondary">Tagasi</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
