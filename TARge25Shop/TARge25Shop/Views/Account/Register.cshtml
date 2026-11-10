@@ -1,0 +1,65 @@
+﻿@model TARge25Shop.Models.Account.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registreeru";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title text-center mb-0">Loo uus konto</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Register" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Name" class="form-label">Nimi</label>
+                            <input asp-for="Name" class="form-control" placeholder="Sisesta oma nimi" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Email" class="form-label">E-post</label>
+                            <input asp-for="Email" class="form-control" placeholder="näide@pood.ee" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="City" class="form-label">Linn</label>
+                            <input asp-for="City" class="form-control" placeholder="Sisesta oma elukoht" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Password" class="form-label">Parool</label>
+                            <input asp-for="Password" class="form-control" placeholder="Vali turvaline parool" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label asp-for="ConfirmPassword" class="form-label">Kinnita parool</label>
+                            <input asp-for="ConfirmPassword" class="form-control" placeholder="Korda parooli" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-block">Registreeru</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <p class="mb-0">On juba konto? <a asp-action="Login">Logi sisse siit</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

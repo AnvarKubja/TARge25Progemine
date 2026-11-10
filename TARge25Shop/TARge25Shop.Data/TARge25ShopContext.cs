@@ -4,7 +4,7 @@ using TARge25Shop.Core.Domain;
 namespace TARge25Shop.Data
 {
     //nimetasime classi TARge25ShopContext, mis pärib DbContext klassi
-    public class TARge25ShopContext : DbContext
+    public class TARge25ShopContext : <ApplicationUser>
     {
         //tegime konteksti, mis pärib DbContext klassi
         public TARge25ShopContext(DbContextOptions<TARge25ShopContext> options) : base(options)
@@ -16,5 +16,6 @@ namespace TARge25Shop.Data
         public DbSet<FileToApi> FileToApis { get; set; }
         public DbSet<RealEstate> RealEstate { get; set; }
         public DbSet<FileToDatabase> FileToDatabases { get; set; }
+        //public DbSet<IdentityRole> ApplicationUsers { get; set; }
     }
 }
