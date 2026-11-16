@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TARge25Shop.ApplicationServices.Services;
+using TARge25Shop.Core.Domain;
 using TARge25Shop.Core.ServiceInterface;
 using TARge25Shop.Data;
 
@@ -17,6 +19,10 @@ namespace TARge25Shop
             builder.Services.AddDbContext<TARge25ShopContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<TARge25ShopContext>()
+                .AddDefaultTokenProviders();
+
             builder.Services.AddScoped<IEmailServices, EmailServices>();
             builder.Services.AddScoped<ISpaceshipServices, SpaceshipServices>();
             builder.Services.AddScoped<IFileServices, FileServices>();
@@ -27,6 +33,7 @@ namespace TARge25Shop
                 client.BaseAddress = new Uri(
                     "https://www.thecocktaildb.com/api/json/v1/1/");
             });
+            
 
 
 

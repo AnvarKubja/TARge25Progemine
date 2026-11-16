@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TARge25Shop.Core.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace TARge25Shop.Data
 {
     //nimetasime classi TARge25ShopContext, mis pärib DbContext klassi
-    public class TARge25ShopContext : <ApplicationUser>
+    public class TARge25ShopContext : IdentityDbContext<ApplicationUser>
     {
         //tegime konteksti, mis pärib DbContext klassi
         public TARge25ShopContext(DbContextOptions<TARge25ShopContext> options) : base(options)
@@ -16,6 +18,6 @@ namespace TARge25Shop.Data
         public DbSet<FileToApi> FileToApis { get; set; }
         public DbSet<RealEstate> RealEstate { get; set; }
         public DbSet<FileToDatabase> FileToDatabases { get; set; }
-        //public DbSet<IdentityRole> ApplicationUsers { get; set; }
+        public DbSet<IdentityRole> ApplicationUsers { get; set; }
     }
 }
