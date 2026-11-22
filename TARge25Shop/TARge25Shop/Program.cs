@@ -19,9 +19,22 @@ namespace TARge25Shop
             builder.Services.AddDbContext<TARge25ShopContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                //nõuab konto kinnitamist emailis
+                options.SignIn.RequireConfirmedAccount = true;
+                //salasõna pikkus peab olema 3 tähemärki
+                options.Password.RequiredLength = 3;
+
+                //vaikepakkuja asemel panime oma tokeni pakkuja selle asemele
+                options.Tokens.EmailConfirmationTokenProvider = "CustomEmailConfirmation";
+
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+            })
                 .AddEntityFrameworkStores<TARge25ShopContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("CustomEmailConfirmation");
 
             builder.Services.AddScoped<IEmailServices, EmailServices>();
             builder.Services.AddScoped<ISpaceshipServices, SpaceshipServices>();

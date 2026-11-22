@@ -1,12 +1,13 @@
-﻿using TARge25Shop.Core.Domain;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using TARge25Shop.Core.Dto;
 using TARge25Shop.Core.ServiceInterface;
+using TARge25Shop.Core.Domain;
 using TARge25Shop.Models.Account;
-using RegisterViewModel = TARge25Shop.Models.Account.RegisterViewModel;
+using TARge25Shop.Core.Dto;
+using System.Diagnostics;
+using TARge25Shop.Models;
+
 
 namespace TARge25Shop.Controllers
 {
@@ -16,11 +17,12 @@ namespace TARge25Shop.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailServices _emailServices;
 
+
         public AccountController
             (
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailServices emailServices
+                UserManager<ApplicationUser> userManager,
+                SignInManager<ApplicationUser> signInManager,
+                IEmailServices emailServices
             )
         {
             _userManager = userManager;
@@ -28,7 +30,6 @@ namespace TARge25Shop.Controllers
             _emailServices = emailServices;
         }
 
-        // Kuvab registreerimisvormi lehe
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register()
@@ -36,32 +37,35 @@ namespace TARge25Shop.Controllers
             return View();
         }
 
-        // Töötleb vormilt tulnud andmed (andmete salvestamine)
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel vm)
         {
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
-                    Name = model.Name,
-                    Email = model.Email,
-                    City = model.City
+                    UserName = vm.Email,
+                    Name = vm.Name,
+                    Email = vm.Email,
+                    City = vm.City
                 };
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, vm.Password);
 
                 if (result.Succeeded)
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+
+                    var confirmationLink =
+                        Url.Action("ConfirmEmail", "Account",
+                        new { userId = user.Id, token = token },
+                        Request.Scheme);
 
                     EmailTokenDto newsignup = new();
                     newsignup.Token = token;
                     newsignup.Body = $"Please confirm your account by clicking this link: <a href='{confirmationLink}'>Confirm Email</a>";
-                    newsignup.Subject = "Confirm your email";
+                    newsignup.Subject = "SHOP Confirm your email";
                     newsignup.To = user.Email;
 
                     if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
@@ -72,11 +76,11 @@ namespace TARge25Shop.Controllers
                     _emailServices.SendEmailToken(newsignup, token);
                     List<string> errordatas =
                         [
-                            "Area", "Accounts",
-                            "Issue", "Success",
-                            "StatusMessage", "Registration Success",
-                            "ActedOn", $"{model.Email}",
-                            "CreatedAccountData", $"{model.Email}\n{model.City}\n[password hidden]\n[password hidden]"
+                        "Area", "Accounts",
+                        "Issue", "Success",
+                        "StatusMessage", "Registration Sucess",
+                        "ActedOn", $"{vm.Email}",
+                        "CreatedAccountData", $"{vm.Email}\n{vm.City}\n[password hidden]\n[password hidden]"
                         ];
                     ViewBag.ErrorData = errordatas;
                     ViewBag.ErrorTitle = "Registration Success";
@@ -84,12 +88,13 @@ namespace TARge25Shop.Controllers
 
                     return View("ConfirmationEmailMessage");
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
             }
-            // Kui andmed pole valiidsed, kuva vorm uuesti koos veateadetega
+            // If we got this far, something failed; redisplay the form
             return View();
         }
 
@@ -101,7 +106,6 @@ namespace TARge25Shop.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-
             //otsib ülesse kasutajaid läbi Id
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -112,15 +116,143 @@ namespace TARge25Shop.Controllers
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
             List<string> errordatas =
-                [
+                    [
                     "Area", "Account",
                     "Issue", "Success",
                     "StatusMessage", "Registration Success",
                     "ActedOn", $"{user.Email}",
-                    "CreatedAccountData", $"{user.Email}\n{user.City}\n[password hidden]\n[password hidden]"
-                ];
-            return null;
-            //teha vaade ConfirmationEmailMessage
+                    "CreatedAccountData", $"{user.Email}\n{user.City}\n[password hidden]"
+                    ];
+
+            if (result.Succeeded)
+            {
+                errordatas =
+                    [
+                    "Area", "Account",
+                    "Issue", "Success",
+                    "StatusMessage", "Registration Success",
+                    "ActedOn", $"{user.Email}",
+                    "CreatedAccountData", $"{user.Email}\n{user.City}\n[password hidden]"
+                    ];
+                ViewBag.ErrorMessage = errordatas;
+                return View();
+            }
+
+            ViewBag.ErrorDatas = errordatas;
+            ViewBag.ErrorTitles = "Email cannot be confirmed";
+            ViewBag.ErrorMessage = $"The user email, with userid of {userId}, cannot be confirmed";
+            return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string? returnUrl)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                //otsib sinu emaili DB-st ülesse
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null && !user.EmailConfirmed &&
+                    (await _userManager.CheckPasswordAsync(user, model.Password)))
+                {
+                    ModelState.AddModelError(string.Empty, "Email not confirmed yet");
+                    return View(model);
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+
+                if (result.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                if (result.IsLockedOut)
+                {
+                    return View("AccountLocked");
+                }
+
+                ModelState.AddModelError("", "Invalid login Attempt");
+            }
+
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    //muutuja token tuleb uus token genereerida
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    //muutja passwordResetLink, mis viib Resetpassword vaatele
+                    var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = model.Email, token = token }, Request.Scheme);
+
+                    //saadame emaili
+                    var emailDto = new EmailDto
+                    {
+                        //emaili sisu
+                        To = model.Email,
+                        Subject = "reset your password",
+                        Body = $"Please reset your password by clicking <a href='{passwordResetLink}'>here</a>"
+                    };
+
+                    _emailServices.SendEmail(emailDto);
+
+                    return View("ForgotPasswordConfirmation");
+                }
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            //kui token või email on null, siis tuleb sõnum, 
+            //Invalid password reset token
+            if (token == null || email == null)
+            {
+                ModelState.AddModelError("", "Invalid password reset token");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+
+            return View(model);
         }
     }
 }
