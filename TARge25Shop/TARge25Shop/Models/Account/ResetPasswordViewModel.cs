@@ -6,7 +6,7 @@ namespace TARge25Shop.Models.Account
     {
 
         [EmailAddress]
-        string Email { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [DataType(DataType.Password)]

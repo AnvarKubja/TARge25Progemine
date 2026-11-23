@@ -251,7 +251,32 @@ namespace TARge25Shop.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
 
+                if (user != null)
+                {
+                    //tulemuses kasutate ResetPasswordAsync ja see annab kaasa useri, tokeni ja salasõna
+                    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+                    //kui õnnestub siis returnib vaadet resetPassWordConfirmation
+                    if (result.Succeeded)
+                    {
+                        if (await _userManager.IsLockedOutAsync(user))
+                        {
+                            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.UtcNow);
+                        }
+
+                        return View("ResetPasswordConfirmation");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
             return View(model);
         }
     }
