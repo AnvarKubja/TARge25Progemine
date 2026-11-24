@@ -279,5 +279,58 @@ namespace TARge25Shop.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                //kui user on null, siis suuna Login vaatesse
+                if (user == null)
+                {
+                    return View("Login");
+                }
+
+                //var result muutuja peab kasutama meedoti muudapassword
+                var result = await _userManager.ChangePasswordAsync(
+                    user, model.CurrentPassword, model.NewPassword);
+
+                //kui ei ole edukas, siis näita veateadet
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View(model);
+                }
+
+                //värskenda sisselogimist
+                await _signInManager.RefreshSignInAsync(user);
+
+                //suunab vaatele muutsid salasõna edukalt
+                return View("ChangePasswordConfirmation");
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
