@@ -1,4 +1,5 @@
 ﻿using AspNetCoreGeneratedDocument;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TARge25Shop.ApplicationServices.Services;
@@ -9,6 +10,7 @@ using TARge25Shop.Models.Spaceship;
 
 namespace TARge25Shop.Controllers
 {
+    [Authorize]
     public class SpaceshipController : Controller
     {
         private readonly ISpaceshipServices _spaceshipServices;

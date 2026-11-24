@@ -7,6 +7,7 @@ using TARge25Shop.Models.Account;
 using TARge25Shop.Core.Dto;
 using System.Diagnostics;
 using TARge25Shop.Models;
+using System.Security.Claims;
 
 
 namespace TARge25Shop.Controllers
@@ -331,6 +332,119 @@ namespace TARge25Shop.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
+        {
+            // Kontrollib Google autentimise viga
+            if (remoteError != null)
+            {
+                TempData["LoginError"] = $"Google login error: {remoteError}";
+                return RedirectToAction("Login");
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+            {
+                TempData["LoginError"] = "Could not retrieve Google login information.";
+                return RedirectToAction("Login");
+            }
+
+            // Proovib olemasoleva Google kontoga sisse logida
+            var result = await _signInManager.ExternalLoginSignInAsync(
+                info.LoginProvider,
+                info.ProviderKey,
+                isPersistent: false);
+
+            if (result.Succeeded)
+            {
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["LoginError"] = "Google did not provide an email address.";
+                return RedirectToAction("Login");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            // Kui kasutaja on juba olemas, ära seo kontosid automaatselt
+            if (user != null)
+            {
+                TempData["LoginError"] =
+                    "An account with this email already exists. Please use your normal login.";
+
+                return RedirectToAction("Login");
+            }
+
+            // Loob uue kasutaja
+            user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true
+            };
+
+            var createResult = await _userManager.CreateAsync(user);
+
+            if (!createResult.Succeeded)
+            {
+                TempData["LoginError"] = string.Join(", ",
+                    createResult.Errors.Select(e => e.Description));
+
+                return RedirectToAction("Login");
+            }
+
+            // Seob Google konto uue kasutajaga
+            var addLoginResult = await _userManager.AddLoginAsync(user, info);
+
+            if (!addLoginResult.Succeeded)
+            {
+                await _userManager.DeleteAsync(user);
+
+                TempData["LoginError"] = string.Join(", ",
+                    addLoginResult.Errors.Select(e => e.Description));
+
+                return RedirectToAction("Login");
+            }
+
+            // Logib kasutaja päriselt sisse
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLogin(string provider, string? returnUrl = null)
+        {
+            var redirectUrl = Url.Action(
+                "ExternalLoginCallback",
+                "Account",
+                new { returnUrl });
+
+            var properties = _signInManager
+                .ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return Challenge(properties, provider);
         }
     }
 }

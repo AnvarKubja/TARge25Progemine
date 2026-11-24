@@ -4,6 +4,7 @@ using TARge25Shop.ApplicationServices.Services;
 using TARge25Shop.Core.Domain;
 using TARge25Shop.Core.ServiceInterface;
 using TARge25Shop.Data;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace TARge25Shop
 {
@@ -46,7 +47,13 @@ namespace TARge25Shop
                 client.BaseAddress = new Uri(
                     "https://www.thecocktaildb.com/api/json/v1/1/");
             });
-            
+            builder.Services.AddAuthentication()
+            .AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            });
+
 
 
 
@@ -63,6 +70,7 @@ namespace TARge25Shop
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();

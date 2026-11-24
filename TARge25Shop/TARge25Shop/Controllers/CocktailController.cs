@@ -1,9 +1,11 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TARge25Shop.Core.ServiceInterface;
 
 namespace TARge25Shop.Controllers
 {
+    [Authorize]
     public class CocktailController : Controller
     {
         private readonly ICocktailServices _cocktailServices;

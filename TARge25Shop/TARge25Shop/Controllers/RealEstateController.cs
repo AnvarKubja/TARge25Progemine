@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TARge25Shop.Core.Dto;
 using TARge25Shop.Core.ServiceInterface;
@@ -7,6 +8,7 @@ using TARge25Shop.Models.RealEstate;
 
 namespace TARge25Shop.Controllers
 {
+    [Authorize]
     public class RealEstateController : Controller
     {
         private readonly IRealEstate _realestateServices;

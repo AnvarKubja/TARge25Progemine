@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using TARge25Shop.Core.ServiceInterface;
 using TARge25Shop.Models.ChuckNorris;
 
 namespace TARge25Shop.Controllers
 {
+    [Authorize]
     public class ChuckNorrisController : Controller
     {
         private readonly IChuckNorrisServices _chuckNorrisServices;

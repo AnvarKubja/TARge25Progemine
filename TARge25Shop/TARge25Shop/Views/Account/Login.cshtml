@@ -4,12 +4,21 @@
     ViewBag.Title = "User Login";
 }
 
+@if (TempData["LoginError"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["LoginError"]
+    </div>
+}
+
 <div class="row">
     <div class="col-md-6">
         <h1>Local Account Login</h1>
         <hr />
+
         <form method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" />
@@ -34,9 +43,28 @@
             <button type="submit" class="btn btn-primary">
                 Login
             </button>
-            <div>
+
+            <div class="mt-2">
                 <a asp-action="ForgotPassword">Forgot Password?</a>
             </div>
         </form>
+
+        <hr />
+
+        <h4>Or login with Google</h4>
+
+        <form asp-controller="Account"
+              asp-action="ExternalLogin"
+              method="post">
+
+            <input type="hidden" name="provider" value="Google" />
+
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-google"></i>
+                Sign in with Google
+            </button>
+
+        </form>
+
     </div>
 </div>
