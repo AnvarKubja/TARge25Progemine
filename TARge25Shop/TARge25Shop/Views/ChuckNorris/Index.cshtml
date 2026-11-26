@@ -4,9 +4,9 @@
     ViewData["Title"] = "Chuck Norris Nali";
 }
 
-<div class="container my-5" style="max-width: 600px;">
+<div class="medium">
     <!-- Kaart nalja kuvamiseks -->
-    <div class="card shadow-sm border-0 bg-light rounded-3 overflow-hidden">
+    <div class="card dark-card">
         <div class="card-body p-4 text-center">
             
             <!-- Ikoon ja Pealkiri -->
@@ -14,14 +14,14 @@
             {
                 <img src="@Model.IconUrl" alt="Chuck Norris" class="mb-3" style="width: 60px; height: 60px;" />
             }
-            <h1 class="h3 mb-4 text-primary">Chuck Norris nali</h1>
+            <h1 class="h3 mb-4">Chuck Norris nali</h1>
             
             <!-- Nalja tekst suurema ja loetavama fondiga -->
             <p class="lead fs-4 italic mb-4">"@Model.Value"</p>
             
             <!-- Nupu vorm -->
             <form asp-action="Index" method="get">
-                <button type="submit" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">
+                <button type="submit" class="btn btn-light px-4">
                     Uus nali
                 </button>
             </form>

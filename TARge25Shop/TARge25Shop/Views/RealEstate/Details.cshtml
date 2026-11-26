@@ -4,51 +4,57 @@
     ViewData["Title"] = "RealEstate details";
 }
 
-<div class="container mt-4">
-    <h1>Real Estate details</h1>
-    <hr />
+<div class="medium">
+    <div class="page-title d-block">
+        <h1>@Model.Location</h1>
+        <p>Kinnisvara detailid</p>
+    </div>
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-dark text-white">
-            <h5 class="card-title mb-0">Details</h5>
-        </div>
-        <div class="card-body">
-            <dl class="row mb-0">
-                <dt class="col-sm-3 fw-bold">ID:</dt>
-                <dd class="col-sm-9 text-muted">@Model.Id</dd>
+    <div class="card mb-4">
+        <div>
+            <dl class="details">
+                <dt>ID</dt>
+                <dd>@Model.Id</dd>
 
-                <dt class="col-sm-3 fw-bold">Area (m²):</dt>
-                <dd class="col-sm-9">@Model.Area</dd>
+                <dt>Area (m²)</dt>
+                <dd>@Model.Area</dd>
 
-                <dt class="col-sm-3 fw-bold">Location:</dt>
-                <dd class="col-sm-9">@Model.Location</dd>
+                <dt>Location</dt>
+                <dd>@Model.Location</dd>
 
-                <dt class="col-sm-3 fw-bold">Room Number:</dt>
-                <dd class="col-sm-9">@Model.RoomNumber</dd>
+                <dt>Room Number</dt>
+                <dd>@Model.RoomNumber</dd>
 
-                <dt class="col-sm-3 fw-bold">Building Type:</dt>
-                <dd class="col-sm-9">@Model.BuildingType</dd>
+                <dt>Building Type</dt>
+                <dd>@Model.BuildingType</dd>
 
-                <dt class="col-sm-3 fw-bold">Created at:</dt>
-                <dd class="col-sm-9">@Model.CreatedAt</dd>
+                <dt>Created at</dt>
+                <dd>@Model.CreatedAt</dd>
 
-                <dt class="col-sm-3 fw-bold">Modified at:</dt>
-                <dd class="col-sm-9">@Model.ModifiedAt</dd>
+                <dt>Modified at</dt>
+                <dd>@Model.ModifiedAt</dd>
                 
                 
             </dl>
-            @foreach (var images in Model.Images)
-            {
-                <partial name="_Images" model="images" />
-            }
             
 
         </div>
     </div>
 
+    @if (Model.Images.Any())
+    {
+        <h5 class="mb-3">Pildid</h5>
+        <div class="images">
+            @foreach (var images in Model.Images)
+            {
+                <partial name="_Images" model="images" />
+            }
+        </div>
+    }
+
     <div class="d-flex gap-2">
-        <a asp-action="Index" class="btn btn-secondary">
-            Back
+        <a asp-action="Index" class="btn btn-primary">
+            Tagasi nimekirja
         </a>
     </div>
 </div>

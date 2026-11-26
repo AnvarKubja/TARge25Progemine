@@ -1,31 +1,308 @@
-html {
-  font-size: 14px;
+/* Üldine minimalistlik stiil kõigile lehtedele */
+
+:root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --text: #18181b;
+    --muted: #71717a;
+    --border: #e4e4e7;
+    --radius: 10px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
+html { font-size: 15px; }
 
 body {
-  margin-bottom: 60px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+h1, h2, h3, h4, h5 { font-weight: 600; letter-spacing: -0.02em; }
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.5rem; margin-bottom: 1.25rem; }
+h3 { font-size: 1.2rem; }
+
+a { color: var(--text); text-underline-offset: 3px; }
+a:hover { color: var(--muted); }
+
+hr { border-color: var(--border); opacity: 1; }
+
+/* Jalus */
+main { padding: 2.5rem 0; }
+
+.footer {
+    margin-top: auto;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: .9rem;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* Lehe pealkiri koos nupuga */
+.page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.page-title h1 { margin: 0; }
+.page-title p { margin: .25rem 0 0; color: var(--muted); }
+
+/* Kitsas sisu (vormid, teated) */
+.narrow { max-width: 440px; margin: 0 auto; }
+.medium { max-width: 720px; margin: 0 auto; }
+
+/* Kaardid */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* Vormid */
+label { font-weight: 500; margin-bottom: .35rem; }
+.form-group { margin-bottom: 1rem; }
+
+.form-control { border-color: var(--border); border-radius: 8px; padding: .55rem .8rem; }
+.form-control:focus, .form-check-input:focus {
+    border-color: var(--text);
+    box-shadow: 0 0 0 3px rgba(24, 24, 27, .1);
+}
+
+/* Nupud */
+.btn { border-radius: 8px; font-weight: 500; }
+.btn:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; box-shadow: none; }
+
+.btn-primary {
+    --bs-btn-bg: var(--text);
+    --bs-btn-border-color: var(--text);
+    --bs-btn-hover-bg: #3f3f46;
+    --bs-btn-hover-border-color: #3f3f46;
+    --bs-btn-active-bg: #3f3f46;
+    --bs-btn-active-border-color: #3f3f46;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--text);
+    --bs-btn-border-color: var(--border);
+    --bs-btn-hover-color: var(--text);
+    --bs-btn-hover-bg: #f4f4f5;
+    --bs-btn-hover-border-color: var(--border);
+    --bs-btn-active-color: var(--text);
+    --bs-btn-active-bg: #e4e4e7;
+    --bs-btn-active-border-color: var(--border);
+}
+
+/* Tabelid */
+.table { margin: 0; }
+.table > :not(caption) > * > * { padding: .85rem 1rem; border-color: var(--border); background: transparent; }
+.table thead th { color: var(--muted); font-size: .85rem; font-weight: 500; white-space: nowrap; }
+.table tbody tr:last-child > * { border-bottom: 0; }
+.table tbody tr:hover > * { background: #f4f4f5; }
+.actions { text-align: right; white-space: nowrap; }
+
+/* Detailide loend */
+.details { display: grid; grid-template-columns: 160px 1fr; margin: 0; }
+.details dt, .details dd { margin: 0; padding: .75rem 1.25rem; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.details dt { color: var(--muted); font-weight: 500; }
+.details dt:last-of-type, .details dd:last-of-type { border-bottom: 0; }
+
+/* Pildid */
+.images { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.images img { width: 100%; height: 150px; object-fit: cover; }
+.images small { display: block; padding: .5rem .75rem; color: var(--muted); overflow-wrap: anywhere; }
+
+@media (max-width: 575px) {
+    .details { grid-template-columns: 130px 1fr; }
+    .page-title { flex-wrap: wrap; }
+}
+
+/* Menüüriba: hõljuv kapsel */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding-top: 1rem;
+}
+
+.site-header .navbar {
+    --nav-bg: #111111;      /* menüü taust */
+    --nav-text: #ffffff;    /* lingid ja nupu taust */
+    background: transparent;
+    padding: 0;
+}
+
+.site-header .navbar > .container {
+    background: var(--nav-bg);
+    padding: .5rem;
+    border-radius: 36px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+}
+
+/* Ümar logo */
+.site-header .navbar-brand {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--nav-text);
+    color: var(--nav-bg);
+    font-size: 1.6rem;
+    font-weight: 800;
+    font-style: italic;
+}
+
+.site-header .nav-link {
+    padding: .6rem .9rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--nav-text);
+    text-decoration: none;
+    transition: background-color .2s;
+}
+
+.site-header .nav-link:hover,
+.site-header .nav-link.show,
+.site-header .nav-link.active {
+    background: rgba(255, 255, 255, .15);
+    color: var(--nav-text);
+}
+
+/* Parempoolne nupp (Login või Logout) */
+.site-header .navbar-nav .nav-cta {
+    background: var(--nav-text);
+    color: var(--nav-bg);
+    font-weight: 500;
+    padding: .75rem 1.5rem;
+}
+
+.site-header .navbar-toggler {
+    margin-right: .25rem;
+    border: 0;
+    border-radius: 999px;
+}
+
+/* Väiksem ekraan: avatud menüü */
+@media (max-width: 1199px) {
+    .site-header { padding-left: .75rem; padding-right: .75rem; }
+    .site-header .navbar > .container { border-radius: 32px; }
+    .site-header .navbar-collapse { padding: .75rem .25rem .25rem; }
+    .site-header .nav-cta { width: 100%; text-align: center; }
+}
+
+/* Must kaart (Chuck Norris ja kokteilid) */
+.dark-card {
+    background: #111111;
+    color: #ffffff;
+    border: 0;
+}
+
+/* Kokteili tulemus */
+.cocktail-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+}
+.cocktail-header img { width: 130px; height: 130px; object-fit: cover; border-radius: var(--radius); }
+.cocktail-header h2 { margin-bottom: .75rem; }
+
+.tag {
+    display: inline-block;
+    margin: 0 .25rem .25rem 0;
+    padding: .25rem .75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .15);
+    font-size: .85rem;
+}
+.tag:empty { display: none; }
+
+.section-title { margin: 0; padding: 1.25rem 1.25rem .5rem; font-size: 1rem; }
+
+@media (max-width: 575px) {
+    .cocktail-header { flex-direction: column; text-align: center; }
+}
+.section-text { padding: 0 1.25rem; }
+
+/* Menüü linkide vahe */
+@media (min-width: 1200px) {
+    .site-header .navbar-nav { gap: .6rem; }
+}
+@media (max-width: 1199px) {
+    .site-header .navbar-nav { gap: .35rem; }
+    .site-header .navbar-nav + .navbar-nav { margin-top: .35rem; }
+}
+
+/* Menüü animatsioonid */
+
+/* Menüü libiseb lehe avamisel ülevalt alla */
+.site-header .navbar > .container { animation: nav-in .5s ease backwards; }
+@keyframes nav-in {
+    from { opacity: 0; translate: 0 -20px; }
+}
+
+/* Logo pöörab hiirega üle liikudes */
+.site-header .navbar-brand { transition: rotate .5s ease, scale .2s ease; }
+.site-header .navbar-brand:hover { rotate: 360deg; scale: 1.08; }
+
+/* Lingid tõusevad veidi üles */
+.site-header .nav-link {
+    position: relative;
+    transition: background-color .25s, translate .25s, scale .15s, box-shadow .25s;
+}
+.site-header .nav-link:hover { translate: 0 -2px; }
+.site-header .nav-link:active { scale: .95; }
+
+/* Joon kasvab lingi alla keskelt laiali */
+.site-header .nav-link:not(.nav-cta, .dropdown-toggle)::after {
+    content: "";
+    position: absolute;
+    left: .9rem;
+    right: .9rem;
+    bottom: .3rem;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    scale: 0 1;
+    transition: scale .25s ease;
+}
+.site-header .nav-link:not(.nav-cta, .dropdown-toggle):hover::after { scale: 1 1; }
+
+/* Parempoolne nupp helendab */
+.site-header .nav-cta:hover {
+    opacity: 1;
+    box-shadow: 0 0 18px rgba(255, 255, 255, .45);
+}
+
+/* Rippmenüü ilmub sujuvalt */
+.site-header .dropdown-menu.show { animation: drop-in .25s ease; }
+@keyframes drop-in {
+    from { opacity: 0; translate: 0 -8px; }
+}
+
+/* Kui kasutaja on seadmes animatsioonid välja lülitanud */
+@media (prefers-reduced-motion: reduce) {
+    .site-header * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Lehe sisu ilmub sujuvalt */
+main { animation: page-in .5s ease backwards; }
+@keyframes page-in {
+    from { opacity: 0; translate: 0 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    main { animation: none; }
 }

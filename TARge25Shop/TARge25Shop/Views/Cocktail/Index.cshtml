@@ -7,7 +7,7 @@
 <div class="d-flex flex-column align-items-center justify-content-center text-center my-5">
     <h1 class="mb-3">Kokteilide otsing</h1>
     <form asp-controller="Cocktail" asp-action="Search" method="get" class="w-100" style="max-width: 400px;">
-        <div class="input-group shadow-sm">
+        <div class="input-group">
             <input type="text" name="name" class="form-control" placeholder="Sisesta kokteili nimi..." value="@ViewBag.SearchName" required />
             <button class="btn btn-primary" type="submit">Otsi</button>
         </div>
@@ -24,95 +24,57 @@
 <!-- Tulemused -->
 @if (Model != null && Model.Count > 0)
 {
-    <div class="container" style="max-width: 600px;">
+    <div class="medium">
         @foreach (var drink in Model)
         {
-            <div class="card my-4 shadow-sm">
-                
-                @if (!string.IsNullOrWhiteSpace(drink.ImageUrl))
-                {
-                    <img src="@drink.ImageUrl" alt="@drink.Name" class="card-img-top" style="max-height: 300px; object-fit: cover;" />
-                }
+            // Paneme koostisosad ja kogused ühte listi
+            var ingredients = new[]
+            {
+                (Name: drink.Ingredient1, Amount: drink.Measure1),
+                (Name: drink.Ingredient2, Amount: drink.Measure2),
+                (Name: drink.Ingredient3, Amount: drink.Measure3),
+                (Name: drink.Ingredient4, Amount: drink.Measure4),
+                (Name: drink.Ingredient5, Amount: drink.Measure5),
+                (Name: drink.Ingredient6, Amount: drink.Measure6),
+                (Name: drink.Ingredient7, Amount: drink.Measure7),
+                (Name: drink.Ingredient8, Amount: drink.Measure8),
+                (Name: drink.Ingredient9, Amount: drink.Measure9),
+                (Name: drink.Ingredient10, Amount: drink.Measure10),
+                (Name: drink.Ingredient11, Amount: drink.Measure11),
+                (Name: drink.Ingredient12, Amount: drink.Measure12),
+                (Name: drink.Ingredient13, Amount: drink.Measure13),
+                (Name: drink.Ingredient14, Amount: drink.Measure14),
+                (Name: drink.Ingredient15, Amount: drink.Measure15),
+            };
 
-                <div class="card-body p-4">
-                    <h2 class="card-title text-primary fw-bold">@drink.Name</h2>
-                    <p class="text-muted small">
-                        <strong>Kategooria:</strong> @drink.Category |
-                        <strong>Alkohol:</strong> @drink.Alcoholic |
-                        <strong>Klaas:</strong> @drink.Glass
-                    </p>
-
-                    <hr />
-
-                    <h4 class="h5 fw-bold">Koostisosad:</h4>
-                    <ul class="list-group list-group-flush mb-3">
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient1))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient1 — @drink.Measure1</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient2))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient2 — @drink.Measure2</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient3))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient3 — @drink.Measure3</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient4))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient4 — @drink.Measure4</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient5))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient5 — @drink.Measure5</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient6))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient6 — @drink.Measure6</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient7))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient7 — @drink.Measure7</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient8))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient8 — @drink.Measure8</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient9))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient9 — @drink.Measure9</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient10))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient10 — @drink.Measure10</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient11))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient11 — @drink.Measure11</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient12))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient12 — @drink.Measure12</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient13))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient13 — @drink.Measure13</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient14))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient14 — @drink.Measure14</li>
-                        }
-                        @if (!string.IsNullOrWhiteSpace(drink.Ingredient15))
-                        {
-                            <li class="list-group-item px-0">@drink.Ingredient15 — @drink.Measure15</li>
-                        }
-                    </ul>
-
-                    <hr />
-
-                    <h4 class="h5 fw-bold">Valmistamine:</h4>
-                    <p class="card-text">@(drink.Instructions ?? "Õpetus puudub.")</p>
+            <div class="card mb-4">
+                <div class="dark-card cocktail-header">
+                    @if (!string.IsNullOrWhiteSpace(drink.ImageUrl))
+                    {
+                        <img src="@drink.ImageUrl" alt="@drink.Name" />
+                    }
+                    <div>
+                        <h2>@drink.Name</h2>
+                        <span class="tag">@drink.Category</span>
+                        <span class="tag">@drink.Alcoholic</span>
+                        <span class="tag">@drink.Glass</span>
+                    </div>
                 </div>
+
+                <h3 class="section-title">Koostisosad</h3>
+                <dl class="details">
+                    @foreach (var item in ingredients)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.Name))
+                        {
+                            <dt>@item.Amount</dt>
+                            <dd>@item.Name</dd>
+                        }
+                    }
+                </dl>
+
+                <h3 class="section-title border-top">Valmistamine</h3>
+                <p class="section-text">@(drink.Instructions ?? "Õpetus puudub.")</p>
             </div>
         }
     </div>
